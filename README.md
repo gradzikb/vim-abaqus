@@ -36,7 +36,7 @@ The plugin has couple of great mappings/functions to make your work even faster.
 
 ##Example of usage
 You are wondering how does work with the plugin look like?
-[Here](http://youtu.be/cQ0ItTGFwLs) you can see how the plugin in work.
+[Here](http://youtu.be/cQ0ItTGFwLs) you can see the plugin in action.
 
 ##Installation
 
