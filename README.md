@@ -1,7 +1,7 @@
 #vim-abaqus
 [VIM](http://www.vim.org/) filetype plugin for [Abaqus](http://www.3ds.com/products-services/simulia/) FE solver.
 
-##Main features
+##Main plugin features
 - Syntax highlighting
 - Folding
 - Keyword completion
@@ -10,34 +10,25 @@
 ###Syntax highlighting
 With color syntax it's easier to navigate through a keyword file.
 
-![vimLsDynaColorSyntax](https://raw.github.com/wiki/gradzikb/vim-abaqus/gifs/abaqus_syntax.gif)
+![vimAbaqusColorSyntax](https://raw.github.com/wiki/gradzikb/vim-abaqus/gifs/vimAbaqusColorSyntax.gif)
 
 ###Folding
 Node & element table folding, no more never ending scrolling!
 
-![vimLsDynaFold](https://raw.github.com/wiki/gradzikb/vim-lsdyna/screenshots/vimLsDynaFold.gif)
+![vimAbaqusFolding](https://raw.github.com/wiki/gradzikb/vim-abaqus/gifs/vimAbaqusFolding.gif)
 
-###Keyword library
-With keyword library you can very quick add a new Ls-Dyna keyword into your model.
+###Keyword completion
+With keyword completion you can in easy way add a new Abaqus keyword or update existing one.
 
-![vimLsDynaKeyLib](https://raw.github.com/wiki/gradzikb/vim-lsdyna/screenshots/vimLsDynaKeyLib.gif)
+![vimAbaqusKeywordCompletion](https://raw.github.com/wiki/gradzikb/vim-abaqus/gifs/vimAbaqusKeywordCompletion.gif)
 
-Visit [keyword library wiki page](https://github.com/gradzikb/vim-lsdyna/wiki/Keyword-Library) to see more.
+###Amplitude commands
+You can use commands to operate with amplitude data directly in VIM.
 
-###Curve commands
-You can use commands to operate with curve data directly in VIM.
-
-![vimLsDynaScale](https://raw.github.com/wiki/gradzikb/vim-lsdyna/screenshots/vimLsDynaScale.gif)
-
-Visit [curve commands wiki page](https://github.com/gradzikb/vim-lsdyna/wiki/Curve-Commands) to meet all commands.
+![vimAbaqusAmpCommand](https://raw.github.com/wiki/gradzikb/vim-abaqus/gifs/vimAbaqusAmpCommand.gif)
 
 ###Commands, functions & mappings
-The plugin has couple of great functions to make your work even faster:
-- [mappings](https://github.com/gradzikb/vim-lsdyna/wiki/Mappings)
-- comment/uncomment
-- data line autoformating
-- keyword text objects
-- include path
+The plugin has couple of great mappings/functions to make your work even faster.
 
 ##Installation
 
@@ -53,9 +44,6 @@ git clone https://github.com/gradzikb/vim-abaqus
 List of all great features and detail information about them you will find in plugin documentation
 
 `:help abaqus`
-
-
-Some examples how to use the plugin can be found on [wiki pages](https://github.com/gradzikb/vim-abaqus/wiki).
 
 ##License
 
