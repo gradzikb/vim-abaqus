@@ -1,6 +1,15 @@
 #vim-abaqus
 [VIM](http://www.vim.org/) filetype plugin for [Abaqus](http://www.3ds.com/products-services/simulia/) FE solver.
 
+
+**What is Abaqus filetype plugin?** It is bunch of scripts for VIM to make easier work with Abaqus inputdeck.
+
+
+**For whom is the plugin?** Well ... for anyone who works with Abaqus.
+- If you do not work directly with Abaqus inputdeck but use a pre-processor you might try use VIM and the plugin.
+- If you already familiar with Abaqus inputdeck but not use VIM the plugin can be a good reason to switch to VIM.
+- If you already use VIM to work with Abaqus inputdeck you will love the plugin :-)
+
 ##Main plugin features
 - Syntax highlighting
 - Folding
@@ -13,7 +22,7 @@ With color syntax it's easier to navigate through a keyword file.
 ![vimAbaqusColorSyntax](https://raw.github.com/wiki/gradzikb/vim-abaqus/gifs/vimAbaqusColorSyntax.gif)
 
 ###Folding
-Node & element table folding, no more never ending scrolling!
+Node & element table folding, no more never ending scrolling.
 
 ![vimAbaqusFolding](https://raw.github.com/wiki/gradzikb/vim-abaqus/gifs/vimAbaqusFolding.gif)
 
@@ -41,7 +50,7 @@ git clone https://github.com/gradzikb/vim-abaqus
 
 ##Documentation
 
-List of all great features and detail information about them you will find in plugin documentation
+List of all plugin functions and detail information about them you will find in the plugin documentation.
 
 `:help abaqus`
 
