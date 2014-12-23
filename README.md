@@ -17,29 +17,32 @@
 - Keyword completion
 - Useful commands, functions and mappings
 
-###Syntax highlighting
+####Syntax highlighting
 With color syntax it's easier to navigate through a keyword file.
 
 ![vimAbaqusColorSyntax](https://raw.github.com/wiki/gradzikb/vim-abaqus/gifs/vimAbaqusColorSyntax.gif)
 
-###Folding
+####Folding
 Node & element table folding, no more never ending scrolling.
 
 ![vimAbaqusFolding](https://raw.github.com/wiki/gradzikb/vim-abaqus/gifs/vimAbaqusFolding.gif)
 
-###Keyword completion
+####Keyword completion
 With keyword completion you can in easy way add a new Abaqus keyword or update existing one.
 
 ![vimAbaqusKeywordCompletion](https://raw.github.com/wiki/gradzikb/vim-abaqus/gifs/vimAbaqusKeywordCompletion.gif)
 
-###Amplitude commands
+####Amplitude commands
 You can use commands to operate with amplitude data directly in VIM.
 
 ![vimAbaqusAmpCommand](https://raw.github.com/wiki/gradzikb/vim-abaqus/gifs/vimAbaqusAmpCommand.gif)
 
-###Commands, functions & mappings
+####Commands, functions & mappings
 The plugin has couple of great mappings/functions to make your work even faster.
 
+##??
+
+You are wondering how work with the plugin looks like? Take a look for [example]() on wiki pages.
 ##Installation
 
 [Pathogen](https://github.com/tpope/vim-pathogen)
