@@ -1,6 +1,7 @@
 #vim-abaqus
 [VIM](http://www.vim.org/) filetype plugin for [Abaqus](http://www.3ds.com/products-services/simulia/) FE solver.
 
+##Introduction
 
 **What is Abaqus filetype plugin?** It is bunch of scripts for VIM to make easier work with Abaqus inputdeck.
 
