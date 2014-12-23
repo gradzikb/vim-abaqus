@@ -1,0 +1,1058 @@
+abaqus.txt*		For Vim version 7.4			Last change: 2014 December 22
+================================================================================
+                        _    _                                                 ~
+                       / \  | |__   __ _  __ _ _   _ ___                       ~
+                      / _ \ | '_ \ / _` |/ _` | | | / __|                      ~
+                     / ___ \| |_) | (_| | (_| | |_| \__ \                      ~
+                    /_/   \_\_.__/ \__,_|\__, |\__,_|___/                      ~
+                                            |_|                                ~
+                                                VIM Filetype Plugin            ~
+              -----------------------------------------------------
+              Author: Bartosz Gradzik (bartosz.gradzik@hotmail.com)
+              -----------------------------------------------------
+
+================================================================================
+CONTENTS
+
+    1. Introduction............................|abaqus-introduction|
+    2. Quick start.............................|abaqus-start|
+    3. Syntax highlighting.....................|abaqus-syntax|
+    4. Folding.................................|abaqus-folding|
+    5. Keyword completion......................|abaqus-keywordCompletion|
+       5.1. Inserting keywords.................|abaqus-insertKeyword|
+       5.1. Inserting keyword options..........|abaqus-insertOption|
+       5.3. Keyword library....................|abaqus-keywordLibrary|
+    6. Plugin built-in functions...............|abaqus-functions|
+       6.1. Mappings list......................|abaqus-mappings|
+       6.2. Commenting.........................|abaqus-comment|
+       6.3. Autoformating......................|abaqus-autoFormat|
+    7. Commands................................|abaqus-commands|
+       7.1. Amplitude commands.................|abaqus-ampCommands|
+            7.1.1. AbaqusScale.................|abaqus-scale|
+            7.1.2. AbaqusShift.................|abaqus-shift|
+            7.1.3. AbaqusAddPoint..............|abaqus-addPoint|
+            7.1.4. AbaqusResample..............|abaqus-resample|
+            7.1.5. AbaqusSwap..................|abaqus-swap|
+       7.2. Number format......................|abaqus-numberFormat|
+    8. Credits.................................|abaqus-credits|
+    9. License.................................|abaqus-license|
+   10. Bugs....................................|abaqus-bugs|
+
+================================================================================
+1. Introduction                                            *abaqus-introduction*
+
+It is VIM filetype plugin for Abaqus inputdeck file.
+
+Abaqus is simulation software from Simulia Dassault Systemes (www.3ds.com).
+The inputdeck is a text file used to store all information about the model,
+with keywords inside which follow specific syntax rules.
+
+Abaqus filetype plugin gives you:
+ - syntax highlighting
+ - folding
+ - keyword completion
+ - useful mappings/functions/commands
+
+================================================================================
+2. Quick start                                                    *abaqus-start*
+
+To use any filetype plugin in VIM you must add following lines into VIMRC file:
+>
+	filetype plugin on
+	syntax on
+<
+The plugin loads automatic for files with extension *.inp.
+To load the plugin manually use command:
+>
+	:set filetype=abaqus
+<
+To check If the plugin is loaded use command:
+>
+	:set filetype?
+<
+VIM message should be:
+>
+	filetype=abaqus
+<
+|abaqus-commands| require VIM version which support float operations.
+You can test your VIM installation with command:
+>
+	echom has("float")
+<
+VIM prints 0 if float operations are not supported and 1 when they are.
+
+================================================================================
+3. Syntax highlighting                                           *abaqus-syntax*
+
+Syntax highlighting supports:
+ - comment lines (start with **)
+ - keyword lines (start with *[a-z])
+
+For keyword line following items are highlighted separately:
+ - keyword word (*AMPLITUDE)
+ - keyword option (NAME)
+ - option value (amplitude_name)
+
+Two types of lines are highlighted as error line:
+ - keyword/commnet line not started in first column
+ - line with only one '*' inside
+
+================================================================================
+4. Folding                                                      *abaqus-folding*
+
+All lines not started with '*' are folded, minimal number of lines to fold is
+four.
+
+In practise node/element lines, amplitude data points and multi line keyword
+definition with more than four lines are folded. To break folding put empty
+comment line.
+
+================================================================================
+5. Keyword completion                                 *abaqus-keywordCompletion*
+
+With keyword completion you can:
+- add Abaqus keyword definition into your inputdeck
+- extend keyword definition with all necessary keyword options
+
+--------------------------------------------------------------------------------
+5.1. Inserting keywords                                   *abaqus-insertKeyword*
+
+In insert mode start typing keyword you want to and use <Ctrl-Tab>.
+
+    +---------------------------------------------+
+    |abaqus_model.inp=============================|
+    |**                                           |
+    |*a<Ctrl-Tab>                                 |
+    |$                                            |
+    |~                                            |
+    |~                                            |
+    |~                                            |
+    |~                                            |
+    |~                                            |
+    |~                                            |
+    |command-line=================================|
+    |                                             |
+    +---------------------------------------------+
+
+VIM will show you list of available keywords with popup menu:
+
+    +---------------------------------------------+
+    |abaqus_model.inp=============================|
+    |**                                           |
+    |*a                                           |
+    ||adjust      |                               |
+    ||amplitude   |                               |
+    |+------------+                               |
+    |~                                            |
+    |~                                            |
+    |~                                            |
+    |~                                            |
+    |command-line=================================|
+    |                                             |
+    +---------------------------------------------+
+
+Select keyword you want to use from the list:
+
+    +---------------------------------------------+
+    |abaqus_model.inp=============================|
+    |**                                           |
+    |*a                                           |
+    ||adjust      |                               |
+   >||amplitude   |<                              |
+    |+------------+                               |
+    |~                                            |
+    |~                                            |
+    |~                                            |
+    |~                                            |
+    |command-line=================================|
+    |                                             |
+    +---------------------------------------------+
+
+Accept selection with <CR>, <C-y>, <kEnter>:
+
+    +---------------------------------------------+
+    |abaqus_model.inp=============================|
+    |**                                           |
+    |*AMPLITUDE                                   |
+    |~                                            |
+    |~                                            |
+    |~                                            |
+    |~                                            |
+    |~                                            |
+    |~                                            |
+    |~                                            |
+    |command-line=================================|
+    |                                             |
+    +---------------------------------------------+
+
+*Note: Asterisk sign '*' at the beginning is mandatory!
+
+Keyword completion is not case sensitive, following examples work the same:
+
+    +---------------------------------------------+
+    |abaqus_model.inp=============================|
+    |**                                           |
+    |*amp<Ctrl-Tab>                               |
+    |*Amp<Ctrl-Tab>                               |
+    |*AMP<Ctrl-Tab>                               |
+    |~                                            |
+    |~                                            |
+    |~                                            |
+    |~                                            |
+    |~                                            |
+    |command-line=================================|
+    |                                             |
+    +---------------------------------------------+
+
+Note: To get list of all available keywords use only '*' sign:
+
+    +---------------------------------------------+
+    |abaqus_model.inp=============================|
+    |**                                           |
+    |*<Ctrl-Tab>                                  |
+    |~                                            |
+    |~                                            |
+    |~                                            |
+    |~                                            |
+    |~                                            |
+    |~                                            |
+    |~                                            |
+    |command-line=================================|
+    |                                             |
+    +---------------------------------------------+
+
+--------------------------------------------------------------------------------
+5.2. Inserting keyword options                             *abaqus-insertOption*
+
+Next step is to extend keyword with an option.
+
+Put keyword separator (coma sign) and once again use completion <Ctrl-Tab>:
+
+    +---------------------------------------------+
+    |abaqus_model.inp=============================|
+    |**                                           |
+    |*AMPLITUDE, <Ctrl-Tab>                       |
+    |~                                            |
+    |~                                            |
+    |~                                            |
+    |~                                            |
+    |~                                            |
+    |~                                            |
+    |~                                            |
+    |command-line=================================|
+    |                                             |
+    +---------------------------------------------+
+
+You got list of all options you can use with your keyword.
+
+    +---------------------------------------------+
+    |abaqus_model.inp=============================|
+    |**                                           |
+    |*AMPLITUDE, <Ctrl-Tab>                       |
+    |~           |name=       |                   |
+    |~           |def=tabular |                   |
+    |~           |shiftx=     |                   |
+    |~           |shifty=     |                   |
+    |~           |scalex=     |                   |
+    |~           |scaley=     |                   |
+    |~           +------------+                   |
+    |command-line=================================|
+    |                                             |
+    +---------------------------------------------+
+
+To cut the list start typing option name before <Ctrl-Tab>:
+
+    +---------------------------------------------+
+    |abaqus_model.inp=============================|
+    |**                                           |
+    |*AMPLITUDE, na<Ctrl-Tab>                     |
+    |~           |name=       |                   |
+    |~           +------------+                   |
+    |~                                            |
+    |~                                            |
+    |~                                            |
+    |~                                            |
+    |~                                            |
+    |command-line=================================|
+    |                                             |
+    +---------------------------------------------+
+
+Next you can add another option you need:
+
+    +---------------------------------------------+
+    |abaqus_model.inp=============================|
+    |**                                           |
+    |*AMPLITUDE, NAME=ampName, sc<Ctrl-Tab>       |
+    |~                         |scalex=     |     |
+    |~                         |scaley=     |     |
+    |~                         +------------+     |
+    |~                                            |
+    |~                                            |
+    |~                                            |
+    |~                                            |
+    |~                                            |
+    |command-line=================================|
+    |                                             |
+    +---------------------------------------------+
+
+Multi line definition is supported as well:
+
+    +---------------------------------------------+
+    |abaqus_model.inp=============================|
+    |**                                           |
+    |*AMPLITUDE, NAME=ampName, SCALEX=1000.0,     |
+    |sh<Ctrl-Tab>                                 |
+    ||shiftx=     |                               |
+    ||shifty=     |                               |
+    |+------------+                               |
+    |~                                            |
+    |~                                            |
+    |~                                            |
+    |~                                            |
+    |command-line=================================|
+    |                                             |
+    +---------------------------------------------+
+
+*Note: The list does not include options you already use!
+
+--------------------------------------------------------------------------------
+5.3. Keyword library                                     *abaqus-keywordLibrary*
+
+The completion function use a keyword library where all available keywords and
+their options are stored.  The library is directory called "keywords".
+Inside are files (*.inp) with keyword definitions.
+
+Keyword library structure:
+>
+	- abaqus                   -> main plugin level
+	  - keywords                 -> keyword library folder
+	    - amplitude.inp            -> keyword definition
+	    - shell_section.inp        -> keyword definition
+	    - solid_section.inp        -> keyword definition
+	    - ...
+<
+Each *.inp file includes one keyword name and options.
+
+    +---------------------------------------------+
+    |amplitude.inp================================|
+    |*AMPLITUDE                                   |
+    |NAME=                                        |
+    |DEFINITION=TABULAR                           |
+    |DEFINITION=USER                              |
+    |SCALEX=                                      |
+    |SCALEY=                                      |
+    |SHIFTX=                                      |
+    |SHIFTY=                                      |
+    |~                                            |
+    |~                                            |
+    |command-line=================================|
+    |                                             |
+    +---------------------------------------------+
+
+First line includes keyword name with '*' at the beginning.
+Other lines include options you can use with this keyword.
+
+The library has limited list of keywords you can use. At some point you will
+want to add a new keyword. It is easy task and do not required any script
+modifications.
+
+To add a new keyword into the library you have to make new file with keyword
+definition and copy it into the library structure folder.
+
+*Note: The library content is loaded only once per VIM session.
+       New keyword will be available after VIM session restart.
+
+Default location of "keywords" folder you can check with command:
+>
+	:echom g:abaqusKeyLibPath
+<
+When the plugin is used by many users each user has his own keyword library.
+If you want to you can change this behaviour. It is better if all user of the
+plugin can share one global keyword library and use the same keywords.
+
+To define location of the keyword library put for all users in vimrc:
+>
+	let g:abaqusKeyLibPath = "C:\\abaqus\\glbKeyLib\\"
+	let g:abaqusKeyLibPath = "/home/abaqus/glbKeyLib/"
+<
+================================================================================
+6. Plugin build-in functions                                  *abaqus-functions*
+
+The plugin has many usefull functions which should help you during your work
+with Abaqus inputdecks.
+
+--------------------------------------------------------------------------------
+6.1. Mappings list                                             *abaqus-mappings*
+
+Most of used mappings start with <localleadear> sign.
+
+*Note: List is showed with default VIM <localleader> '\'.
+
+Movement controls:
+]] : jump to next keyword
+[[ : jump to previous keyword
+
+Separator line:
+\0 : put separator with title below current line
+\) : put separator with title above current line
+\1 : put separator line below current line
+\! : put separator line above current line
+
+Comment line:
+\c : put empty comment below current line
+\C : put empty comment above current line
+
+Comment abbreviation:
+To start comment text you need to use '*' sign two times, space bar and then
+you can type your comment text. Using <Shift-8> two times to get '**' is not
+handy. The plugin has nice abbreviation to overcame this. Just type '8' and
+space bar and VIM will change '8' into '**' and you can type your comment text.
+
+*Note: It works only if '8' is in 1st column.
+
+--------------------------------------------------------------------------------
+6.2. Commenting                                                 *abaqus-comment*
+
+The function is used to comment/uncomment line/lines in Abaqus keyword file.
+
+Function is trigged with:
+- <ALT-c>
+- <Ctrl-c> (you can use it if you have problem with Alt mapping)
+
+If selected line start with "**" it will be uncommented, if the line does not
+start with "**" it will be commented. If you selected more than one line
+comment/uncomment will be performed according to first line from selection.
+
+Select lines you want to comment:
+
+    +---------------------------------------------+
+    |abaqus_model.inp=============================|
+    |**                                           |
+   >|*AMPLITUDE, NAME=ampName                     |<
+   >|   0.0,   0.0                                |<
+   >|   1.0,   1.0                                |<
+   >|   2.0,   1.0                                |<
+   >|   3.0,   1.0                                |<
+    |**                                           |
+    |~                                            |
+    |command-line=================================+
+    |                                             |
+    +---------------------------------------------+
+
+Use <Alt-c>:
+
+    +---------------------------------------------+
+    |abaqus_model.inp=============================|
+    |**                                           |
+    |***AMPLITUDE, NAME=ampname                   |
+    |**   0.0,   0.0                              |
+    |**   1.0,   1.0                              |
+    |**   2.0,   1.0                              |
+    |**   3.0,   1.0                              |
+    |**                                           |
+    |~                                            |
+    |command-line=================================+
+    |                                             |
+    +---------------------------------------------+
+
+To uncomment select the same lines and use <Alt-c> once again.
+
+--------------------------------------------------------------------------------
+6.3. Autoformating                                           *abaqus-autoFormat*
+
+The plugin has autoformating function trigged with <localLeadear><localLeadear>.
+With default instalation <localleadear><localleadear> is '\' so you need to
+use '\\' to run autoformating function.
+
+The function formats keyword/comment/datalines lines in one standard way.
+
+--------------------------------------------------------------------------------
+6.3.1. Keyword line formating
+
+When the function is trigged on any keyword line whole keyword definition will
+be stored in new format.
+
+Rules for keyword autoformating:
+ - keyword name is formated to uppercase
+ - all keyword options are formated to uppercase
+ - options values are kept but leading and trailing white signs are removed
+ - if whole keyword definition fits into 80 columns the keyword are saved in
+   one line in other way multi line keyword definition is used
+ - NSET, ELSET, NAME options are saved after keyword name
+ - other options are sorted with alphabetical order
+
+Move cursor to any line of keyword definition:
+
+    +---------------------------------------------+
+    |abaqus_model.inp=============================|
+    |**                                           |
+    |*amplitude, name=ampname,                    |
+   >|definition=TABULAR, SHIFTY=10.0,             |<
+    |   Scalex=5.0                                |
+    |   0.0,   0.0                                |
+    |   1.0,   1.0                                |
+    |**                                           |
+    |~                                            |
+    |~                                            |
+    |command-line=================================+
+    |                                             |
+    +---------------------------------------------+
+
+Run autoformating function:
+
+    +---------------------------------------------+
+    |abaqus_model.inp=============================|
+    |**                                           |
+    |*AMPLITUDE, NAME=ampname,                    |
+    |            DEFINITION=TABULAR,              |
+    |            SCALEX=10.0,                     |
+    |            SHIFTY=5.0                       |
+    |   0.0,   0.0                                |
+    |   1.0,   1.0                                |
+    |**                                           |
+    |~                                            |
+    |~                                            |
+    |command-line=================================+
+    |                                             |
+    +---------------------------------------------+
+
+--------------------------------------------------------------------------------
+6.3.2. Amplitude datalines formating
+
+If autoformating function is used with amplitude datalines, the points are
+format into two columns (16 width) and coma is put as separator in between.
+
+The function is useful to convert:
+ - old amplitude format (4 points per line) into new format (1 point per line)
+ - curves from other third part softwares
+
+Input data does not required coma as separator between points.
+
+Some examples of usage are showed below.
+
+--> Old Abaqus amplitude format to new one
+
+Make visual line selection for data lines:
+
+    +---------------------------------------------+
+    |abaqus_model.inp=============================|
+    |**                                           |
+    |*AMPLITUDE, NAME=ampName                     |
+   >| 0.0, 0.0, 1.0, 1.0, 2.0, 2.0, 3.0, 3.0      |<
+   >| 4.0, 4.0, 5.0, 5.0, 6.0, 6.0, 7.0, 7.0      |<
+   >| 8.0, 8.0                                    |<
+    |**                                           |
+    |~                                            |
+    |~                                            |
+    |~                                            |
+    |command-line=================================+
+    |                                             |
+    +---------------------------------------------+
+
+Use \\ with selected lines:
+
+    +---------------------------------------------+
+    |abaqus_model.inp=============================|
+    |**                                           |
+    |*AMPLITUDE, NAME=ampName                     |
+    |              0.0,            0.0            |
+    |              1.0,            1.0            |
+    |              2.0,            2.0            |
+    |              3.0,            3.0            |
+    |              4.0,            4.0            |
+    |              5.0,            5.0            |
+    |              6.0,            6.0            |
+    |              7.0,            7.0            |
+    |              8.0,            8.0            |
+    |**                                           |
+    |command-line=================================+
+    |                                             |
+    +---------------------------------------------+
+
+--> LsDyna *DEFINE_CURVE format to Abaqus *AMPLITUDE format
+
+Make visual line selection for data lines:
+
+    +---------------------------------------------+
+    |abaqus_model.inp=============================|
+    |**                                           |
+    |*AMPLITUDE, NAME=ampName                     |
+   >|                 0.0                 0.0     |<
+   >|                 1.0                 1.0     |<
+    |**                                           |
+    |~                                            |
+    |~                                            |
+    |~                                            |
+    |~                                            |
+    |command-line=================================+
+    |                                             |
+    +---------------------------------------------+
+
+Use \\ with selected lines:
+
+    +---------------------------------------------+
+    |abaqus_model.inp=============================|
+    |**                                           |
+    |*AMPLITUDE, NAME=ampName                     |
+    |              0.0,            0.0            |
+    |              1.0,            1.0            |
+    |**                                           |
+    |~                                            |
+    |~                                            |
+    |~                                            |
+    |~                                            |
+    |command-line=================================+
+    |                                             |
+    +---------------------------------------------+
+
+--------------------------------------------------------------------------------
+6.3.3. Comment line formating
+
+The function remove all white signs from beginning of the line till '**'.
+
+Select a line with visual selection:
+
+    +---------------------------------------------+
+    |abaqus_model.inp=============================|
+    |**                                           |
+   >|  ** 100N force load in x-direction          |<
+    |*CLOAD                                       |
+    | load-NSET, 1, 100.0                         |
+    |**                                           |
+    |~                                            |
+    |~                                            |
+    |~                                            |
+    |~                                            |
+    |command-line=================================+
+    |                                             |
+    +---------------------------------------------+
+
+Use <localleadear><localleadear> to align the line:
+
+    +---------------------------------------------+
+    |abaqus_model.inp=============================|
+    |**                                           |
+    |** 100N force load in x-direction            |
+    |*CLOAD                                       |
+    | load-NSET, 1, 100.0                         |
+    |**                                           |
+    |~                                            |
+    |~                                            |
+    |~                                            |
+    |~                                            |
+    |command-line=================================+
+    |                                             |
+    +---------------------------------------------+
+
+================================================================================
+7. Commands                                                    *abaqus-commands*
+
+7.1. Amplitude commands                                     *abaqus-ampCommands*
+
+List of commands to manipulate amplitude datalines:
+
+ - AbaqusScale    - scale x and/or y data
+ - AbaqusShift    - shift x and/or y data
+ - AbaqusAddpoint - add new point
+ - AbaqusResample - resample amplitude
+ - AbaqusSwap     - swamp x and y columns
+
+--------------------------------------------------------------------------------
+7.1.1. AbaqusScale command                                        *abaqus-scale*
+
+Description:
+Scale x and/or y value on the amplitude.
+
+Syntax:
+:AbaqusScale x_sf y_sf
+
+Arguments:
+x_sf - scaling factor for x data (default value 1.0)
+y_sf - scaling factor for y data (default value 1.0)
+
+Example of use:
+
+Make visual selection line with data lines:
+
+    +---------------------------------------------+
+    |abaqus_model.inp=============================|
+    |**                                           |
+    |*AMPLITUDE, NAME=ampName                     |
+   >|   0.0,   0.0                                |<
+   >|   1.0,   1.0                                |<
+    |**                                           |
+    |~                                            |
+    |command-line=================================+
+    |                                             |
+    +---------------------------------------------+
+>
+	:AbaqusScale 10.0 5.0
+<
+    +---------------------------------------------+
+    |abaqus_model.inp=============================|
+    |**                                           |
+    |*AMPLITUDE, NAME=ampName                     |
+    |   0.0,   0.0                                |
+    |  10.0,   5.0                                |
+    |**                                           |
+    |~                                            |
+    |command-line=================================+
+    |                                             |
+    +---------------------------------------------+
+
+--------------------------------------------------------------------------------
+7.1.2. AbaqusShift command                                        *abaqus-shift*
+
+Description:
+Shift x and/or y values on the amplitude.
+
+Syntax:
+:AbaqusShift x_shift y_shift
+
+Arguments:
+x_shift - offset value for x data (default value 0.0)
+y_shift - offset value for y data (default value 0.0)
+
+Example of use:
+
+Make visual selection line with data lines:
+
+    +---------------------------------------------+
+    |abaqus_model.inp=============================|
+    |**                                           |
+    |*AMPLITUDE, NAME=ampName                     |
+   >|   0.0,   0.0                                |<
+   >|   1.0,   1.0                                |<
+    |**                                           |
+    |~                                            |
+    |command-line=================================+
+    |                                             |
+    +---------------------------------------------+
+>
+	:AbaqusShift 10.0 5.0
+<
+    +---------------------------------------------+
+    |abaqus_model.inp=============================|
+    |**                                           |
+    |*AMPLITUDE, NAME=ampName                     |
+    |  10.0,   5.0                                |
+    |  11.0,   6.0                                |
+    |**                                           |
+    |~                                            |
+    |command-line=================================+
+    |                                             |
+    +---------------------------------------------+
+
+--------------------------------------------------------------------------------
+7.1.3. AbaqusAddPoint command                                  *abaqus-addPoint*
+
+Description:
+AbaqusAddPoint insert a new point for x user value. For points outside range new
+y value is linear extrapolated base on two first or two last points. For points
+inside the range new y value is linear interpolated base on the closets points.
+
+Synatx:
+:AbaqusAddPoint x
+
+Arguments:
+x - user x value for new point
+
+Example of use:
+
+Make visual selection line with data lines:
+
+    +---------------------------------------------+
+    |abaqus_model.inp=============================|
+    |**                                           |
+    |*AMPLITUDE, NAME=ampName                     |
+   >|   0.0,   0.0                                |<
+   >|   2.0,   4.0                                |<
+    |**                                           |
+    |~                                            |
+    |command-line=================================+
+    |                                             |
+    +---------------------------------------------+
+>
+	:AbaqusAddPoint -1.0
+<
+    +---------------------------------------------+
+    |abaqus_model.inp=============================|
+    |**                                           |
+    |*AMPLITUDE, NAME=ampName                     |
+    |  -1.0,  -2.0                                |
+    |   0.0,   0.0                                |
+    |   2.0,   4.0                                |
+    |**                                           |
+    |~                                            |
+    |command-line=================================+
+    |                                             |
+    +---------------------------------------------+
+>
+	:AbaqusAddPoint 0.5
+<
+    +---------------------------------------------+
+    |abaqus_model.inp=============================|
+    |**                                           |
+    |*AMPLITUDE, NAME=ampName                     |
+    |   0.0,   0.0                                |
+    |   0.5,   1.0                                |
+    |   2.0,   4.0                                |
+    |**                                           |
+    |~                                            |
+    |command-line=================================+
+    |                                             |
+    +---------------------------------------------+
+>
+	:AbaqusAddPoint 4.0
+<
+    +---------------------------------------------+
+    |abaqus_model.inp=============================|
+    |**                                           |
+    |*AMPLITUDE, NAME=ampName                     |
+    |   0.0,   0.0                                |
+    |   2.0,   4.0                                |
+    |   4.0,   8.0                                |
+    |**                                           |
+    |~                                            |
+    |command-line=================================+
+    |                                             |
+    +---------------------------------------------+
+
+--------------------------------------------------------------------------------
+7.1.4. AbaqusResample command                                  *abaqus-resample*
+
+Description:
+Command allow you to resample the amplitude with new number of points.
+
+Synatx:
+:AbaqusResample -i incr
+:AbaqusResample -p nump
+
+Arguments:
+incr - increment
+nump - number of points
+
+Example of use:
+
+Make visual selection line with data lines:
+
+    +---------------------------------------------+
+    |abaqus_model.inp=============================|
+    |**                                           |
+    |*AMPLITUDE, NAME=ampName                     |
+   >|   0.0,   0.0                                |<
+   >|   1.0,   1.0                                |<
+    |**                                           |
+    |~                                            |
+    |command-line=================================+
+    |                                             |
+    +---------------------------------------------+
+>
+	:AbaqusResample -i 0.2
+<
+    +---------------------------------------------+
+    |abaqus_model.inp=============================|
+    |**                                           |
+    |*AMPLITUDE, NAME=ampName                     |
+    |   0.0,   0.0                                |
+    |   0.2,   0.2                                |
+    |   0.4,   0.4                                |
+    |   0.6,   0.6                                |
+    |   0.8,   0.8                                |
+    |   1.0,   1.0                                |
+    |**                                           |
+    |~                                            |
+    |command-line=================================+
+    |                                             |
+    +---------------------------------------------+
+>
+	:AbaqusResample -p 6
+<
+    +---------------------------------------------+
+    |abaqus_model.inp=============================|
+    |**                                           |
+    |*AMPLITUDE, NAME=ampName                     |
+    |   0.0,   0.0                                |
+    |   0.2,   0.2                                |
+    |   0.4,   0.4                                |
+    |   0.6,   0.6                                |
+    |   0.8,   0.8                                |
+    |   1.0,   1.0                                |
+    |**                                           |
+    |~                                            |
+    |command-line=================================+
+    |                                             |
+    +---------------------------------------------+
+
+--------------------------------------------------------------------------------
+7.1.5. AbaqusSwap command                                          *abaqus-swap*
+
+Description:
+Command allow you to swap x and y column.
+
+Synatx:
+:AbaqusSwap
+
+Example of use:
+
+Make visual selection line with data lines:
+
+    +---------------------------------------------+
+    |abaqus_model.inp=============================|
+    |**                                           |
+    |*AMPLITUDE, NAME=ampName                     |
+   >|   0.0,   -5.0                               |<
+   >|   1.0,   -5.0                               |<
+    |**                                           |
+    |~                                            |
+    |command-line=================================+
+    |                                             |
+    +---------------------------------------------+
+>
+	:AbaqusSwap
+<
+    +---------------------------------------------+
+    |abaqus_model.inp=============================|
+    |**                                           |
+    |*AMPLITUDE, NAME=ampName                     |
+    |   -5.0,   0.0                               |
+    |   -5.0,   1.0                               |
+    |**                                           |
+    |~                                            |
+    |command-line=================================+
+    |                                             |
+    +---------------------------------------------+
+
+--------------------------------------------------------------------------------
+7.2. Number format                                         *abaqus-numberFormat*
+
+Each function uses number format from first x value.
+
+    +---------------------------------------------+
+    |abaqus_model.inp=============================|
+    |**                                           |
+    |*AMPLITUDE, NAME=ampName                     |
+   >|   0.00e+00,   0.0                           |<
+   >|        1.0,   1.0                           |<
+    |**                                           |
+    |~                                            |
+    |command-line=================================+
+    |                                             |
+    +---------------------------------------------+
+>
+	:AbaqusScale 10.0 5.0
+<
+    +---------------------------------------------+
+    |abaqus_model.inp=============================|
+    |**                                           |
+    |*AMPLITUDE, NAME=ampName                     |
+    |   0.00e+00,   0.00e+00                      |
+    |   1.00e+01,   5.00e+00                      |
+    |**                                           |
+    |~                                            |
+    |command-line=================================+
+    |                                             |
+    +---------------------------------------------+
+
+Note: If you do not want change amplitude values but only format, change first x
+value and use AbaqusScale/AbaqusShift command with default parameters.
+
+    +---------------------------------------------+
+    |abaqus_model.inp=============================|
+    |**                                           |
+    |*AMPLITUDE, NAME=ampName                     |
+   >|   0.00e+00,   0.0                           |<
+   >|        1.0,   1.0                           |<
+    |**                                           |
+    |~                                            |
+    |command-line=================================+
+    |                                             |
+    +---------------------------------------------+
+>
+	:AbaqusScale
+<
+    +---------------------------------------------+
+    |abaqus_model.inp=============================|
+    |**                                           |
+    |*AMPLITUDE, NAME=ampName                     |
+    |   0.00e+00,   0.00e+00                      |
+    |   1.00e+00,   1.00e+00                      |
+    |**                                           |
+    |~                                            |
+    |command-line=================================+
+    |                                             |
+    +---------------------------------------------+
+
+Note: Always keep in mind that format of first x-value plays a role.
+In some situations you can loose some data during amplitude operations.
+
+    +---------------------------------------------+
+    |abaqus_model.inp=============================|
+    |**                                           |
+    |*AMPLITUDE, NAME=ampName                     |
+   >|     0.0,     0.0                            |<
+   >|   0.001,   0.005                            |<
+    |**                                           |
+    |~                                            |
+    |command-line=================================+
+    |                                             |
+    +---------------------------------------------+
+>
+	:AbaqusShift 0.01
+<
+    +---------------------------------------------+
+    |abaqus_model.inp=============================|
+    |**                                           |
+    |*AMPLITUDE, NAME=ampName                     |
+    |   0.0,   0.0                                |
+    |   0.0,   0.0                                |
+    |**                                           |
+    |~                                            |
+    |command-line=================================+
+    |                                             |
+    +---------------------------------------------+
+
+You can see after shifting data precision have been lost since first x value
+has only one decimal place.
+
+================================================================================
+8. Credits                                                     *abaqus-credits*
+
+ keyword library       Bartosz Gradzik
+ mappings              Bartosz Gradzik
+ functions             Bartosz Gradzik
+ amplitude commands    Bartosz Gradzik
+ syntax highlighting   Bartosz Gradzik
+ folding               Bartosz Gradzik
+
+================================================================================
+9. License                                                     *abaqus-license*
+
+Ls-Dyna filetype plugin for VIM
+Copyright (C) 2014 Bartosz Gradzik (bartosz.gradzik@hotmail.com)
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+================================================================================
+10. Bugs                                                           *abaqus-bugs*
+
+It's not a bug is a feature ;-)
+
+Found a bug? Please let me know at bartosz.gradzik@hotmail.com.
+
+Bugs list:
+----------
+
+================================================================================
+vim:tw=80:ts=4:ft=help:norl:
