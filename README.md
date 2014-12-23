@@ -5,12 +5,6 @@
 
 **What is Abaqus filetype plugin?** It is bunch of scripts for VIM to make easier work with Abaqus inputdeck.
 
-
-**For whom is the plugin?** Well ... for anyone who works with Abaqus.
-- If you do not work directly with Abaqus inputdeck but use a pre-processor you might try use VIM and the plugin.
-- If you already familiar with Abaqus inputdeck but not use VIM the plugin can be a good reason to switch to VIM.
-- If you already use VIM to work with Abaqus inputdeck you will love the plugin :-)
-
 ##Main plugin features
 - Syntax highlighting
 - Folding
@@ -40,9 +34,6 @@ You can use commands to operate with amplitude data directly in VIM.
 ####Commands, functions & mappings
 The plugin has couple of great mappings/functions to make your work even faster.
 
-##??
-
-You are wondering how work with the plugin looks like? Take a look for [example]() on wiki pages.
 ##Installation
 
 [Pathogen](https://github.com/tpope/vim-pathogen)
