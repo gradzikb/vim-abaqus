@@ -34,6 +34,10 @@ You can use commands to operate with amplitude data directly in VIM.
 ####Commands, functions & mappings
 The plugin has couple of great mappings/functions to make your work even faster.
 
+##Example of usage
+You are wondering how does work with the plugin look like?
+[Here](http://youtu.be/cQ0ItTGFwLs) you can see how the plugin in work.
+
 ##Installation
 
 [Pathogen](https://github.com/tpope/vim-pathogen)
