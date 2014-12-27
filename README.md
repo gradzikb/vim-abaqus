@@ -5,7 +5,7 @@
 
 What is Abaqus filetype plugin?
 
-It is set of tools to speed up your work with VIM and Abaqus inputdeck file.
+It's set of scripts for VIM to speed up work with Abaqus inputdeck file.
 
 ##Main plugin features
 - Syntax highlighting
