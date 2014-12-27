@@ -1,4 +1,4 @@
-abaqus.txt*		For Vim version 7.4			Last change: 2014 December 22
+*abaqus.txt*		For Vim version 7.4			Last change: 2014 December 22
 ================================================================================
                         _    _                                                 ~
                        / \  | |__   __ _  __ _ _   _ ___                       ~
@@ -22,7 +22,7 @@ CONTENTS
        5.1. Inserting keywords.................|abaqus-insertKeyword|
        5.1. Inserting keyword options..........|abaqus-insertOption|
        5.3. Keyword library....................|abaqus-keywordLibrary|
-    6. Plugin built-in functions...............|abaqus-functions|
+    6. Plugin functions........................|abaqus-functions|
        6.1. Mappings list......................|abaqus-mappings|
        6.2. Commenting.........................|abaqus-comment|
        6.3. Autoformating......................|abaqus-autoFormat|
@@ -34,6 +34,7 @@ CONTENTS
             7.1.4. AbaqusResample..............|abaqus-resample|
             7.1.5. AbaqusSwap..................|abaqus-swap|
        7.2. Number format......................|abaqus-numberFormat|
+       7.3. Reference mesh.....................|abaqus-refMesh|
     8. Credits.................................|abaqus-credits|
     9. License.................................|abaqus-license|
    10. Bugs....................................|abaqus-bugs|
@@ -117,7 +118,7 @@ With keyword completion you can:
 --------------------------------------------------------------------------------
 5.1. Inserting keywords                                   *abaqus-insertKeyword*
 
-In insert mode start typing keyword you want to and use <Ctrl-Tab>.
+In insert mode start typing keyword you want to and use <Ctrl-Tab>:
 
     +---------------------------------------------+
     |abaqus_model.inp=============================|
@@ -655,7 +656,7 @@ List of commands to manipulate amplitude datalines:
  - AbaqusShift    - shift x and/or y data
  - AbaqusAddpoint - add new point
  - AbaqusResample - resample amplitude
- - AbaqusSwap     - swamp x and y columns
+ - AbaqusSwap     - swap x and y columns
 
 --------------------------------------------------------------------------------
 7.1.1. AbaqusScale command                                        *abaqus-scale*
@@ -1015,8 +1016,72 @@ In some situations you can loose some data during amplitude operations.
 You can see after shifting data precision have been lost since first x value
 has only one decimal place.
 
+--------------------------------------------------------------------------------
+6.4. Reference mesh                                             *abaqus-refMesh*
+
+The command converts reference mesh definition from *INITIAL CONDITIONS,
+TYPE=REF TYPE=REF COORDINATE into mesh definition (*NODE & ELEMENT).
+
+Function description:
+- new mesh are put into new not saved buffer
+- both 3 node (tria) & 4 node (quad) elements are supported
+- element ids are carry over
+- node ids start from 1
+- elements are not connected in new mesh
+
+Example of use:
+
+Make visual selection line with reference mesh:
+
+    +---------------------------------------------+
+    |abaqus_model.inp=============================|
+    |**                                           |
+    |*INITIAL CONDITIONS, TYPE=REF COORDINATE     |
+   >| 1, 0.0, 0.0, 0.0,  1.0, 0.0, 0.0            |<
+   >|    0.0, 1.0, 0.0                            |<
+   >| 2, 0.0, 0.0, 1.0,  1.0, 0.0, 1.0            |<
+   >|    0.0, 1.0, 1.0                            |<
+    |**                                           |
+    |~                                            |
+    |command-line=================================+
+    |                                             |
+    +---------------------------------------------+
+>
+	:AbaqusRefMesh
+<
+    +---------------------------------------------+
+    |abaqus_model.inp=============================|
+    |**                                           |
+    |*INITIAL CONDITIONS, TYPE=REF COORDINATE     |
+    | 10, 0.0, 0.0, 0.0,  1.0, 0.0, 0.0           |
+    |     0.0, 1.0, 0.0                           |
+    | 11, 0.0, 0.0, 1.0,  1.0, 0.0, 1.0           |
+    |     0.0, 1.0, 1.0                           |
+    |**                                           |
+    |~                                            |
+    |unnamed======================================|
+    |**                                           |
+    |*NODE                                        |
+    | 1, 0.0, 0.0, 0.0                            |
+    | 2, 1.0, 0.0, 0.0                            |
+    | 3, 0.0, 1.0, 0.0                            |
+    | 4, 0.0, 0.0, 1.0                            |
+    | 5, 1.0, 0.0, 1.0                            |
+    | 6, 0.0, 1.0, 1.0                            |
+    |*ELEMENT, TYPE=M3D3, ELSET=abqRefMesh        |
+    | 10, 1, 2, 3                                 |
+    | 11, 4, 5, 6                                 |
+    |**                                           |
+    |~                                            |
+    |command-line=================================+
+    |                                             |
+    +---------------------------------------------+
+
 ================================================================================
 8. Credits                                                     *abaqus-credits*
+
+ Many of functions used with the plugin is based on Abaqus VIM filetype plugin
+ by Carl Osterwisch.
 
  keyword library       Bartosz Gradzik
  mappings              Bartosz Gradzik

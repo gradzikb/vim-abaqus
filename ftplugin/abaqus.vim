@@ -9,7 +9,8 @@
 "
 " History of change:
 " v1.0.0
-"   - initial version
+"   - initial version base on default Abaqus ftplugin from VIM
+"     installation directory by Carl Osterwisch <osterwischc@asme.org>
 "
 "-------------------------------------------------------------------------------
 
@@ -47,7 +48,14 @@ setlocal iskeyword+=-
 " Fold all lines that do not begin with *
 setlocal foldexpr=getline(v:lnum)!~?\"\^[*]\"
 setlocal foldmethod=expr
-setlocal foldminlines=4
+setlocal foldminlines=40
+
+"-------------------------------------------------------------------------------
+"   ABBREVIATIONS
+"-------------------------------------------------------------------------------
+
+" let to use [d to find *SURFACE/*ELSET/*NSET definition
+setlocal define=^\\*\\a.*\\c\\(NAME\\\|NSET\\\|ELSET\\)\\s*=
 
 "-------------------------------------------------------------------------------
 "   ABBREVIATIONS
@@ -136,7 +144,7 @@ noremap <buffer><script><silent> <LocalLeader><LocalLeader>
  \ :call abq_autoformat#AbaqusLine()<CR>
 
 "-------------------------------------------------------------------------------
-"    CURVE COMMANDS
+"    COMMANDS
 "-------------------------------------------------------------------------------
 
 command! -buffer -range -nargs=* AbaqusShift
@@ -153,6 +161,9 @@ command! -buffer -range -nargs=* AbaqusAddPoint
 
 command! -buffer -range AbaqusSwap
  \ :call abq_amplitudes#Swap(<line1>,<line2>)
+
+command! -buffer -range AbaqusRefMesh
+ \ :call abq_refMesh#RefMesh(<line1>,<line2>)
 
 "-------------------------------------------------------------------------------
 " restore vim functions
