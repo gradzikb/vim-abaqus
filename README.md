@@ -43,9 +43,11 @@ The plugin has couple of great mappings/functions to make your work even faster.
 
 The plugin has [documentation](https://github.com/gradzikb/vim-abaqus/blob/master/doc/abaqus.txt) with detail explanation of all functions and examples how to use them.
 
+Please read the documentation before you start using the plugin.
+
 `:help abaqus`
 
-Please read the documentation before you start using the plugin.
+
 
 ##Installation
 
