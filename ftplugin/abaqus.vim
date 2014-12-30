@@ -48,13 +48,13 @@ setlocal iskeyword+=-
 " Fold all lines that do not begin with *
 setlocal foldexpr=getline(v:lnum)!~?\"\^[*]\"
 setlocal foldmethod=expr
-setlocal foldminlines=40
+setlocal foldminlines=4
 
 "-------------------------------------------------------------------------------
 "   ABBREVIATIONS
 "-------------------------------------------------------------------------------
 
-" let to use [d to find *SURFACE/*ELSET/*NSET definition
+" let use [d to find *SURFACE/*ELSET/*NSET definition
 setlocal define=^\\*\\a.*\\c\\(NAME\\\|NSET\\\|ELSET\\)\\s*=
 
 "-------------------------------------------------------------------------------
@@ -74,6 +74,39 @@ inoreabbrev 8 8<C-R>=AbqComment()<CR>
 
 iabbrev bof **------------------------------------BOF---------------------------------------
 iabbrev eof **------------------------------------EOF---------------------------------------
+
+"-------------------------------------------------------------------------------
+"   INCLUDES
+"-------------------------------------------------------------------------------
+
+" open in current window
+nnoremap <silent><buffer> gf Vgf
+" open in new window
+nnoremap <silent><buffer> gF V<C-w>f<C-w>H
+" define include string, let use :checkpath
+setlocal include=\\cinput\\s*=
+" let use <C-x><c-f> with no white sign after '='
+setlocal isfname-==
+
+" function to grap path from whole *INCLUDE line
+function! AbqIncludeName(fname)
+  " remove evrything befor 1st '=' sign
+  let fname = substitute(a:fname,'^.\{-}=\s*','','')
+  " remove evrything after ',' sign
+  let fname = substitute(fname,'\s*,.*$','','')
+  return fname
+endfunction
+setlocal includeexpr=AbqIncludeName(v:fname)
+
+" always set current working directory respect to open file
+augroup abaqusPWD
+  autocmd!
+  " set working directory to current file
+  autocmd BufNewFile * cd %:p:h
+  autocmd BufReadPost * cd %:p:h
+  autocmd WinEnter * cd %:p:h
+  autocmd TabEnter * cd %:p:h
+augroup END
 
 "-------------------------------------------------------------------------------
 "   MAPPINGS
