@@ -36,8 +36,8 @@ You can use commands to operate with amplitude data directly in VIM.
 ####Commands, functions & mappings
 The plugin has couple of great mappings/functions to make your work even faster.
 
-##Example
-On a [wiki page](https://github.com/gradzikb/vim-abaqus/wiki/Example) you can see the plugin in action.
+##Wiki
+More detail overview of the plugin you can find on [wiki pages](https://github.com/gradzikb/vim-abaqus/wiki/Home) 
 
 ##Documentation
 
