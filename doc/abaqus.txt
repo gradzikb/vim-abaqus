@@ -402,14 +402,11 @@ Separator line:
 Comment line:
 \c : put empty comment below current line
 \C : put empty comment above current line
+8<Space> : start commnet line (works only if '8' is in 1st column
 
-Comment abbreviation:
-To start comment text you need to use '*' sign two times, space bar and then
-you can type your comment text. Using <Shift-8> two times to get '**' is not
-handy. The plugin has nice abbreviation to overcame this. Just type '8' and
-space bar and VIM will change '8' into '**' and you can type your comment text.
-
-*Note: It works only if '8' is in 1st column.
+Include file:
+gf :  open include file in current window
+gF :  open include file in new window
 
 --------------------------------------------------------------------------------
 6.2. Commenting                                                 *abaqus-comment*
