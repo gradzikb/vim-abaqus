@@ -37,7 +37,9 @@ You can use commands to operate with amplitude data directly in VIM.
 The plugin has couple of great mappings/functions to make your work even faster.
 
 ##Wiki
-More detail overview of the plugin you can find on [wiki pages](https://github.com/gradzikb/vim-abaqus/wiki/Home) 
+More detail overview of the plugin you can find on [wiki pages](https://github.com/gradzikb/vim-abaqus/wiki/Home).
+
+The plugin in action you can see [here](https://github.com/gradzikb/vim-abaqus/wiki/Example).
 
 ##Documentation
 
@@ -46,8 +48,6 @@ The plugin has [documentation](https://github.com/gradzikb/vim-abaqus/blob/maste
 Please read the documentation before you start using the plugin.
 
 `:help abaqus`
-
-
 
 ##Installation
 
