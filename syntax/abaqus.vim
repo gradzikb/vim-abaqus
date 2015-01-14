@@ -8,6 +8,10 @@
 " Version:      1.0.0
 "
 " History of change:
+" v1.0.1
+"   - keyword multi line definition with white signs after coma support
+"
+" History of change:
 " v1.0.0
 "   - initial version base on default Abaqus syntax file from VIM
 "     installation directory by Carl Osterwisch <osterwischc@asme.org>
@@ -24,7 +28,7 @@ let b:current_syntax = "abaqus"
 syntax match abqComment '^\*\*.*$'
 syntax match abqErrorLine1 '^\s\+\*.*$'
 syntax match abqErrorLine2 '^\*\s*$'
-syntax match abqNextLine ',$' contained
+syntax match abqNextLine ',\s*$' contained
 syntax match abqKeywordName '^\*\a[^,]*' contained
 syntax match abqKeywordOption1 ',\s*[^=,]*'lc=1 contained
 syntax match abqKeywordOption2 '^\s*\a[^=,]*' contained
