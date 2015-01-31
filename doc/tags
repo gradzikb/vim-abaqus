@@ -2,11 +2,15 @@ abaqus-addPoint	abaqus.txt	/*abaqus-addPoint*
 abaqus-ampCommands	abaqus.txt	/*abaqus-ampCommands*
 abaqus-autoFormat	abaqus.txt	/*abaqus-autoFormat*
 abaqus-bugs	abaqus.txt	/*abaqus-bugs*
+abaqus-checkpath	abaqus.txt	/*abaqus-checkpath*
 abaqus-commands	abaqus.txt	/*abaqus-commands*
 abaqus-comment	abaqus.txt	/*abaqus-comment*
 abaqus-credits	abaqus.txt	/*abaqus-credits*
 abaqus-folding	abaqus.txt	/*abaqus-folding*
 abaqus-functions	abaqus.txt	/*abaqus-functions*
+abaqus-includeJump	abaqus.txt	/*abaqus-includeJump*
+abaqus-includeName	abaqus.txt	/*abaqus-includeName*
+abaqus-includes	abaqus.txt	/*abaqus-includes*
 abaqus-insertKeyword	abaqus.txt	/*abaqus-insertKeyword*
 abaqus-insertOption	abaqus.txt	/*abaqus-insertOption*
 abaqus-introduction	abaqus.txt	/*abaqus-introduction*

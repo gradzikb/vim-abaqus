@@ -35,9 +35,13 @@ CONTENTS
             7.1.5. AbaqusSwap..................|abaqus-swap|
        7.2. Number format......................|abaqus-numberFormat|
        7.3. Reference mesh.....................|abaqus-refMesh|
-    8. Credits.................................|abaqus-credits|
-    9. License.................................|abaqus-license|
-   10. Bugs....................................|abaqus-bugs|
+    8. Include files...........................|abaqus-includes|
+       8.1. File name completion...............|abaqus-includeName|
+       8.2. Include jumps......................|abaqus-includeJump|
+       8.3. Checkpath..........................|abaqus-checkpath|
+    9. Credits.................................|abaqus-credits|
+   10. License.................................|abaqus-license|
+   11. Bugs....................................|abaqus-bugs|
 
 ================================================================================
 1. Introduction                                            *abaqus-introduction*
@@ -402,7 +406,7 @@ Separator line:
 Comment line:
 \c : put empty comment below current line
 \C : put empty comment above current line
-8<Space> : start commnet line (works only if '8' is in 1st column
+8<Space> : start commnet line (works only if '8' is in 1st column)
 
 Include file:
 gf :  open include file in current window
@@ -1017,14 +1021,14 @@ has only one decimal place.
 6.4. Reference mesh                                             *abaqus-refMesh*
 
 The command converts reference mesh definition from *INITIAL CONDITIONS,
-TYPE=REF TYPE=REF COORDINATE into mesh definition (*NODE & ELEMENT).
+TYPE=REF COORDINATE into mesh definition (*NODE & ELEMENT).
 
 Function description:
-- new mesh are put into new not saved buffer
+- new mesh is put into new VIM buffer
 - both 3 node (tria) & 4 node (quad) elements are supported
 - element ids are carry over
-- node ids start from 1
-- elements are not connected in new mesh
+- node ids are created from scratch starting with id 1
+- elements are not merge in new mesh (they not share common nodes)
 
 Example of use:
 
@@ -1075,7 +1079,157 @@ Make visual selection line with reference mesh:
     +---------------------------------------------+
 
 ================================================================================
-8. Credits                                                     *abaqus-credits*
+8. Include files                                               *abaqus-includes*
+
+VIM has a lot of helpful options to work with many files. You can use them
+to work with Abaqus include files if your model use them. The plugin setups
+those function to work with Abaqus *INCLUDE keyword.
+
+Please see VIM documentation for details how to work with buffers.
+
+--------------------------------------------------------------------------------
+8.1. File name completion                                   *abaqus-includeName*
+
+With VIM build-in file completion <Ctrl-x><Ctrl-f> command you can in easy way
+add a new include file to your master deck.
+
+Use <Ctrl-x><Ctrl-f> to get list of files in include directory:
+
+    +---------------------------------------------+
+    |abaqus_model.inp=============================|
+    |**                                           |
+    |*INCLUDE, INPUT=../OO_INC<Ctrl-x><Ctrl-f>    |
+    |~                                            |
+    |~                                            |
+    |~                                            |
+    |~                                            |
+    |~                                            |
+    |~                                            |
+    |~                                            |
+    |command-line=================================|
+    |                                             |
+    +---------------------------------------------+
+
+Select include file:
+
+    +---------------------------------------------+
+    |abaqus_model.inp=============================|
+    |**                                           |
+    |*INCLUDE, INPUT=../OO_INC<Ctrl-x><Ctrl-f>    |
+    |~              |../00_INC/include_A.inc   |  |
+    |~              |../00_INC/include_B.inc   |  |
+    |~             >|../00_INC/include_C.inc   |< |
+    |~              |../00_INC/include_D.inc   |  |
+    |~              +--------------------------+  |
+    |~                                            |
+    |~                                            |
+    |command-line=================================|
+    |                                             |
+    +---------------------------------------------+
+
+    +---------------------------------------------+
+    |abaqus_model.inp=============================|
+    |**                                           |
+    |*INCLUDE, INPUT=../OO_INC/include_C.inc      |
+    |~                                            |
+    |~                                            |
+    |~                                            |
+    |~                                            |
+    |~                                            |
+    |~                                            |
+    |~                                            |
+    |command-line=================================|
+    |                                             |
+    +---------------------------------------------+
+
+--------------------------------------------------------------------------------
+8.2. Include jumps                                          *abaqus-includeJump*
+
+To jump from master deck into include file you can use gf or gF commands.
+
+Jump commands:
+- gf : open include file in current window
+- gF : will split window and open the file in new window
+
+*NOTE gf is abbreviation from "go file"
+
+Put cursor on the line with include keyword:
+
+    +---------------------------------------------+
+    |abaqus_model.inp=============================|
+    |**                                           |
+    |*INCLUDE, INPUT=../OO_INC/include_A.inc      |
+   >|*INCLUDE, INPUT=../OO_INC/include_B.inc      |<
+    |*INCLUDE, INPUT=../OO_INC/include_C.inc      |
+    |~                                            |
+    |~                                            |
+    |~                                            |
+    |~                                            |
+    |~                                            |
+    |command-line=================================|
+    |                                             |
+    +---------------------------------------------+
+
+Use gf or gF to jump:
+
+    +---------------------------------------------+
+    |include_B.inc================================|
+    |**                                           |
+    |** include B                                 |
+   >|**                                           |<
+    |*NODE                                        |
+    | 1000, 0.0, 0.0, 0.0                         |
+    | ...                                         |
+    |*ELEMENT, TYPE=S3                            |
+    | 1000, 1000, 1001, 1002                      |
+    | ...                                         |
+    |~                                            |
+    |command-line=================================|
+    |                                             |
+    +---------------------------------------------+
+
+*NOTE Jump commands work also when *INLCUDE line is commented.
+
+--------------------------------------------------------------------------------
+8.3. Checkpath                                                *abaqus-checkpath*
+
+VIM command :checkpath can be used to test have all your paths and include
+names are valid.
+
+    +---------------------------------------------+
+    |abaqus_model.inp=============================|
+    |**                                           |
+    |*INCLUDE, INPUT=../OO_INC/include_A.inc      |
+    |*INCLUDE, INPUT=../OO_INC/include_X.inc      |
+    |*INCLUDE, INPUT=../OO_INC/include_C.inc      |
+    |~                                            |
+    |~                                            |
+    |~                                            |
+    |~                                            |
+    |~                                            |
+    |command-line=================================|
+    |                                             |
+    +---------------------------------------------+
+>
+	:checkpath
+<
+    +---------------------------------------------+
+    |abaqus_model.inp=============================|
+    |**                                           |
+    |*INCLUDE, INPUT=../OO_INC/include_A.inc      |
+    |*INCLUDE, INPUT=../OO_INC/include_X.inc      |
+    |*INCLUDE, INPUT=../OO_INC/include_C.inc      |
+    |~                                            |
+    |~                                            |
+    |~                                            |
+    |command-line=================================|
+    |--- Included files not found in path ---     |
+    |../OO_INC/include_X.inc                      |
+    |Press ENTER or type command to continue      |
+    +---------------------------------------------+
+
+================================================================================
+9. Credits                                                     *abaqus-credits*
 
  Many of functions used with the plugin is based on Abaqus VIM filetype plugin
  by Carl Osterwisch.
@@ -1088,7 +1242,7 @@ Make visual selection line with reference mesh:
  folding               Bartosz Gradzik
 
 ================================================================================
-9. License                                                     *abaqus-license*
+10. License                                                    *abaqus-license*
 
 Ls-Dyna filetype plugin for VIM
 Copyright (C) 2014 Bartosz Gradzik (bartosz.gradzik@hotmail.com)
@@ -1107,7 +1261,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 ================================================================================
-10. Bugs                                                           *abaqus-bugs*
+11. Bugs                                                           *abaqus-bugs*
 
 It's not a bug is a feature ;-)
 
