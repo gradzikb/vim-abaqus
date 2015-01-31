@@ -43,7 +43,7 @@ The plugin in action you can see [here](https://github.com/gradzikb/vim-abaqus/w
 
 ##Documentation
 
-The plugin has [documentation](https://github.com/gradzikb/vim-abaqus/blob/master/doc/abaqus.txt) with detail explanation of all functions and examples how to use them.
+The plugin has decent [documentation](https://github.com/gradzikb/vim-abaqus/blob/master/doc/abaqus.txt) with detail explanation of all functions and examples.
 
 Please read the documentation before you start using the plugin.
 
