@@ -102,6 +102,7 @@ setlocal includeexpr=AbqIncludeName(v:fname)
 augroup abaqusPWD
   autocmd!
   " set working directory to current file
+  cd %:p:h
   autocmd BufNewFile * cd %:p:h
   autocmd BufReadPost * cd %:p:h
   autocmd WinEnter * cd %:p:h
