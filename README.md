@@ -46,7 +46,7 @@ Detail list of all of them is in the plugin documentation: `:help abaqus-functio
 
 ##Example
 
-The plugin in action you can see [here](https://github.com/gradzikb/vim-abaqus/wiki/Example).
+The plugin in action you can see [here](https://www.youtube.com/watch?v=cQ0ItTGFwLs&feature=youtu.be).
 
 ##Documentation
 
