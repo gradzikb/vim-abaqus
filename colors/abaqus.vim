@@ -1,8 +1,23 @@
+"-------------------------------------------------------------------------------
+"
 " Vim color file
-" Maintainer:	Thorsten Maerz <info@netztorte.de>
-" Last Change:	2001 Jul 23
-" grey on black
-" optimized for TFT panels
+"
+" Language:    Abaqus FE solver input file
+" Maintainer:  Bartosz Gradzik <bartosz.gradzik@hotmail.com>
+"
+" Last Change: 13.05.2015
+" - non-default colors for popup menu set
+"
+" Last Change: 1st of January 2014
+" - color scheme updated for Abaqus filetye plugin
+"
+" Maintainer:  Thorsten Maerz <info@netztorte.de>
+" Last Change: 2006 Dec 07
+" - base color scheme
+" - grey on black
+" - optimized for TFT panels
+"
+"-------------------------------------------------------------------------------
 
 set background=dark
 hi clear
@@ -36,3 +51,8 @@ highlight Comment    ctermfg=LightRed
 highlight StatusLine ctermfg=blue	ctermbg=white
 highlight Statement  ctermfg=Yellow			cterm=NONE
 highlight Type						cterm=NONE
+
+" popup menu colors
+highlight Pmenu guibg=black guifg=white
+highlight PmenuSel guibg=white guifg=black
+

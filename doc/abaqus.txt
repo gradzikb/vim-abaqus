@@ -1,4 +1,4 @@
-*abaqus.txt*		For Vim version 7.4			Last change: 2014 December 22
+*abaqus.txt*		For Vim version 7.4			Last change: 2015 March 14
 ================================================================================
                         _    _                                                 ~
                        / \  | |__   __ _  __ _ _   _ ___                       ~
@@ -33,6 +33,7 @@ CONTENTS
             7.1.3. AbaqusAddPoint..............|abaqus-addPoint|
             7.1.4. AbaqusResample..............|abaqus-resample|
             7.1.5. AbaqusSwap..................|abaqus-swap|
+            7.1.6. AbaqusReverse...............|abaqus-reverse|
        7.2. Number format......................|abaqus-numberFormat|
        7.3. Reference mesh.....................|abaqus-refMesh|
     8. Include files...........................|abaqus-includes|
@@ -49,29 +50,33 @@ CONTENTS
 It is VIM filetype plugin for Abaqus inputdeck file.
 
 Abaqus is simulation software from Simulia Dassault Systemes (www.3ds.com).
-The inputdeck is a text file used to store all information about the model,
+The inputdeck is a text file used to store all information about the model
 with keywords inside which follow specific syntax rules.
 
 Abaqus filetype plugin gives you:
- - syntax highlighting
- - folding
- - keyword completion
- - useful mappings/functions/commands
+  - syntax highlighting
+  - folding
+  - keyword library
+  - useful mappings & functions
+  - useful commands
 
 ================================================================================
 2. Quick start                                                    *abaqus-start*
 
-To use any filetype plugin in VIM you must add following lines into VIMRC file:
+To use filetype plugin in VIM you must add following lines into your vimrc file:
 >
 	filetype plugin on
 	syntax on
 <
-The plugin loads automatic for files with extension *.inp.
-To load the plugin manually use command:
+The plugin loads automatic for files with extension:
+  - *.inp
+  - *.pes
+
+If necessary the plugin can be load manually with command:
 >
 	:set filetype=abaqus
 <
-To check If the plugin is loaded use command:
+To check if the plugin is loaded into VIM use:
 >
 	:set filetype?
 <
@@ -91,21 +96,21 @@ VIM prints 0 if float operations are not supported and 1 when they are.
 
 Syntax highlighting supports:
  - comment lines (start with **)
- - keyword lines (start with *[a-z])
+ - keyword lines (start with *[a-zA-Z])
 
-For keyword line following items are highlighted separately:
+In keyword line following items are highlighted separately:
  - keyword word (*AMPLITUDE)
  - keyword option (NAME)
  - option value (amplitude_name)
 
 Two types of lines are highlighted as error line:
- - keyword/commnet line not started in first column
- - line with only one '*' inside
+ - keyword/comment line not started in first column
+ - line with only one "*"
 
 ================================================================================
 4. Folding                                                      *abaqus-folding*
 
-All lines not started with '*' are folded, minimal number of lines to fold is
+All lines not started with "*" are folded, minimal number of lines to fold is
 four.
 
 In practise node/element lines, amplitude data points and multi line keyword
@@ -123,12 +128,13 @@ With keyword completion you can:
 5.1. Inserting keywords                                   *abaqus-insertKeyword*
 
 In insert mode start typing keyword you want to and use <Ctrl-Tab>:
+NOTE: Keyword completion can be trigged with <Ctrl-x><Ctrl-o> as well.
 
     +---------------------------------------------+
     |abaqus_model.inp=============================|
     |**                                           |
     |*a<Ctrl-Tab>                                 |
-    |$                                            |
+    |**                                           |
     |~                                            |
     |~                                            |
     |~                                            |
@@ -190,7 +196,7 @@ Accept selection with <CR>, <C-y>, <kEnter>:
     |                                             |
     +---------------------------------------------+
 
-*Note: Asterisk sign '*' at the beginning is mandatory!
+NOTE: Asterisk sign "*" at the beginning is mandatory!
 
 Keyword completion is not case sensitive, following examples work the same:
 
@@ -209,7 +215,7 @@ Keyword completion is not case sensitive, following examples work the same:
     |                                             |
     +---------------------------------------------+
 
-Note: To get list of all available keywords use only '*' sign:
+NOTE: To get list of all available keywords use:
 
     +---------------------------------------------+
     |abaqus_model.inp=============================|
@@ -248,7 +254,7 @@ Put keyword separator (coma sign) and once again use completion <Ctrl-Tab>:
     |                                             |
     +---------------------------------------------+
 
-You got list of all options you can use with your keyword.
+You get list of all options you can use with your keyword:
 
     +---------------------------------------------+
     |abaqus_model.inp=============================|
@@ -265,7 +271,7 @@ You got list of all options you can use with your keyword.
     |                                             |
     +---------------------------------------------+
 
-To cut the list start typing option name before <Ctrl-Tab>:
+To cut the list start typing first letter of option name before <Ctrl-Tab>:
 
     +---------------------------------------------+
     |abaqus_model.inp=============================|
@@ -282,7 +288,7 @@ To cut the list start typing option name before <Ctrl-Tab>:
     |                                             |
     +---------------------------------------------+
 
-Next you can add another option you need:
+Repeat procedure to add option you need:
 
     +---------------------------------------------+
     |abaqus_model.inp=============================|
@@ -318,25 +324,38 @@ Multi line definition is supported as well:
     |                                             |
     +---------------------------------------------+
 
-*Note: The list does not include options you already use!
+NOTE: The list does not include options you already use!
 
 --------------------------------------------------------------------------------
 5.3. Keyword library                                     *abaqus-keywordLibrary*
 
-The completion function use a keyword library where all available keywords and
-their options are stored.  The library is directory called "keywords".
-Inside are files (*.inp) with keyword definitions.
+The library does not have all Abaqus keywords. If keyword you use often is
+missing you have to add it into the library. It is easy task and do not required
+any script modifications.
+
+Whole library is "keywords" directory. Inside are subdirectories with Abaqus
+keywords. The subdirectories are organized in alphabetical order. Finally inside
+are *.inp files with keywords definitions.
 
 Keyword library structure:
 >
 	- abaqus                   -> main plugin level
-	  - keywords                 -> keyword library folder
-	    - amplitude.inp            -> keyword definition
-	    - shell_section.inp        -> keyword definition
-	    - solid_section.inp        -> keyword definition
+	  - keywords               -> keyword library
+	    - a
+	    - b
+	    - p                    -> p-keywords subdirectory
+	      - paramter.inp
+	      - part.inp           -> keyword definition
+	      - plastic.inp
+	      - ...
+	    - s                    -> s-keywords subdirectory
+	      - shell_section.inp
+	      - solid_section.inp    -> keyword definition
+	      - surface.inp
+	      - ...
 	    - ...
 <
-Each *.inp file includes one keyword name and options.
+Each *.inp file includes one keyword name with options.
 
     +---------------------------------------------+
     |amplitude.inp================================|
@@ -354,26 +373,19 @@ Each *.inp file includes one keyword name and options.
     |                                             |
     +---------------------------------------------+
 
-First line includes keyword name with '*' at the beginning.
-Other lines include options you can use with this keyword.
+To add a new keyword into the library:
+1. Create a new *.inp file with all lines necessary to define new keyword
+2. Copy file to correct subdirectory
 
-The library has limited list of keywords you can use. At some point you will
-want to add a new keyword. It is easy task and do not required any script
-modifications.
-
-To add a new keyword into the library you have to make new file with keyword
-definition and copy it into the library structure folder.
-
-*Note: The library content is loaded only once per VIM session.
-       New keyword will be available after VIM session restart.
+NOTE: Keyword library are initialized once per VIM session.
+      New keyword will be available after VIM session restart.
 
 Default location of "keywords" folder you can check with command:
 >
 	:echom g:abaqusKeyLibPath
 <
-When the plugin is used by many users each user has his own keyword library.
-If you want to you can change this behaviour. It is better if all user of the
-plugin can share one global keyword library and use the same keywords.
+Location of keyword library can be change, it lets use one library among many
+users.
 
 To define location of the keyword library put for all users in vimrc:
 >
@@ -383,43 +395,32 @@ To define location of the keyword library put for all users in vimrc:
 ================================================================================
 6. Plugin build-in functions                                  *abaqus-functions*
 
-The plugin has many usefull functions which should help you during your work
+The plugin has many useful functions which should help you during your work
 with Abaqus inputdecks.
 
 --------------------------------------------------------------------------------
 6.1. Mappings list                                             *abaqus-mappings*
 
-Most of used mappings start with <localleadear> sign.
+]]       : jump to next keyword
+[[       : jump to previous keyword
+8<Space> : put "**" at the beginning of the line (works only if "8" is in 1st col)
+<ll><ll> : aurformating function
+<Alt-C>  : comment/uncomment line
+<Ctrl-C> : comment/uncomment line
+<ll>c    : put empty comment line below
+<ll>C    : put empty comment line above
+<ll>0    : separator with title below
+<ll>1    : separator line below
+<ll>!    : separator with title above (is like <ll>1 with <Shift>)
+<ll>@    : separator line above (is like <ll>2 with <Shift>)
 
-*Note: List is showed with default VIM <localleader> '\'.
-
-Movement controls:
-]] : jump to next keyword
-[[ : jump to previous keyword
-
-Separator line:
-\0 : put separator with title below current line
-\) : put separator with title above current line
-\1 : put separator line below current line
-\! : put separator line above current line
-
-Comment line:
-\c : put empty comment below current line
-\C : put empty comment above current line
-8<Space> : start commnet line (works only if '8' is in 1st column)
-
-Include file:
-gf :  open include file in current window
-gF :  open include file in new window
+<ll> is <localleader> key in VIM. By default it is backslash "\".
 
 --------------------------------------------------------------------------------
 6.2. Commenting                                                 *abaqus-comment*
 
 The function is used to comment/uncomment line/lines in Abaqus keyword file.
-
-Function is trigged with:
-- <ALT-c>
-- <Ctrl-c> (you can use it if you have problem with Alt mapping)
+Function is mapped with <ALT-c> or <Ctrl-c>.
 
 If selected line start with "**" it will be uncommented, if the line does not
 start with "**" it will be commented. If you selected more than one line
@@ -462,17 +463,15 @@ To uncomment select the same lines and use <Alt-c> once again.
 --------------------------------------------------------------------------------
 6.3. Autoformating                                           *abaqus-autoFormat*
 
-The plugin has autoformating function trigged with <localLeadear><localLeadear>.
-With default instalation <localleadear><localleadear> is '\' so you need to
-use '\\' to run autoformating function.
-
-The function formats keyword/comment/datalines lines in one standard way.
+The plugin has simple autoformating function. The function is trigged with
+<ll><ll> mapping ("\\" for default VIM settings). The function formats
+keyword, comment and data lines in one standard way.
 
 --------------------------------------------------------------------------------
 6.3.1. Keyword line formating
 
 When the function is trigged on any keyword line whole keyword definition will
-be stored in new format.
+be updated to new format.
 
 Rules for keyword autoformating:
  - keyword name is formated to uppercase
@@ -522,15 +521,13 @@ Run autoformating function:
 6.3.2. Amplitude datalines formating
 
 If autoformating function is used with amplitude datalines, the points are
-format into two columns (16 width) and coma is put as separator in between.
+format into two columns (16 width each) with coma as separator.
 
 The function is useful to convert:
  - old amplitude format (4 points per line) into new format (1 point per line)
  - curves from other third part softwares
 
-Input data does not required coma as separator between points.
-
-Some examples of usage are showed below.
+Examples of use are showed below.
 
 --> Old Abaqus amplitude format to new one
 
@@ -551,7 +548,7 @@ Make visual line selection for data lines:
     |                                             |
     +---------------------------------------------+
 
-Use \\ with selected lines:
+Use <ll><ll> with selected lines:
 
     +---------------------------------------------+
     |abaqus_model.inp=============================|
@@ -590,7 +587,7 @@ Make visual line selection for data lines:
     |                                             |
     +---------------------------------------------+
 
-Use \\ with selected lines:
+Use <ll><ll> with selected lines:
 
     +---------------------------------------------+
     |abaqus_model.inp=============================|
@@ -629,7 +626,7 @@ Select a line with visual selection:
     |                                             |
     +---------------------------------------------+
 
-Use <localleadear><localleadear> to align the line:
+Use <ll><ll> to align the line:
 
     +---------------------------------------------+
     |abaqus_model.inp=============================|
@@ -651,13 +648,14 @@ Use <localleadear><localleadear> to align the line:
 
 7.1. Amplitude commands                                     *abaqus-ampCommands*
 
-List of commands to manipulate amplitude datalines:
+Amplitude command list:
 
- - AbaqusScale    - scale x and/or y data
- - AbaqusShift    - shift x and/or y data
- - AbaqusAddpoint - add new point
- - AbaqusResample - resample amplitude
- - AbaqusSwap     - swap x and y columns
+- :AbaqusScale    - scale x and/or y data
+- :AbaqusShift    - shift x and/or y data
+- :AbaqusAddpoint - add new point
+- :AbaqusResample - resample amplitude
+- :AbaqusSwap     - swap x and y columns
+- :AbaqusReverse  - reverse amplitude points
 
 --------------------------------------------------------------------------------
 7.1.1. AbaqusScale command                                        *abaqus-scale*
@@ -751,7 +749,7 @@ Make visual selection line with data lines:
 Description:
 AbaqusAddPoint insert a new point for x user value. For points outside range new
 y value is linear extrapolated base on two first or two last points. For points
-inside the range new y value is linear interpolated base on the closets points.
+inside the range new y value is linear interpolated base on the nearest points.
 
 Synatx:
 :AbaqusAddPoint x
@@ -926,6 +924,53 @@ Make visual selection line with data lines:
     +---------------------------------------------+
 
 --------------------------------------------------------------------------------
+7.1.6. AbaqusReverse command                                    *abaqus-reverse*
+
+Description:
+Reverse order of curve data points.
+
+Synatx:
+:AbaqusReverse
+
+Example of use:
+
+Make visual selection line with data lines:
+
+    +---------------------------------------------+
+    |abaqus_model.inp=============================|
+    |**                                           |
+    |*AMPLITUDE, NAME=ampName                     |
+   >|    0.0,     0.0                             |<
+   >|    2.0,     2.0                             |<
+   >|    4.0,     4.0                             |<
+   >|    6.0,     6.0                             |<
+   >|    8.0,     8.0                             |<
+   >|   10.0,    10.0                             |<
+    |**                                           |
+    |~                                            |
+    |command-line=================================+
+    |                                             |
+    +---------------------------------------------+
+>
+	:AbaqusReverse
+<
+    +---------------------------------------------+
+    |abaqus_model.inp=============================|
+    |**                                           |
+    |*AMPLITUDE, NAME=ampName                     |
+   >|   10.0,    10.0                             |<
+   >|    8.0,     8.0                             |<
+   >|    6.0,     6.0                             |<
+   >|    4.0,     4.0                             |<
+   >|    2.0,     2.0                             |<
+   >|    0.0,     0.0                             |<
+    |**                                           |
+    |~                                            |
+    |command-line=================================+
+    |                                             |
+    +---------------------------------------------+
+
+--------------------------------------------------------------------------------
 7.2. Number format                                         *abaqus-numberFormat*
 
 Each function uses number format from first x value.
@@ -956,8 +1001,8 @@ Each function uses number format from first x value.
     |                                             |
     +---------------------------------------------+
 
-Note: If you do not want change amplitude values but only format, change first x
-value and use AbaqusScale/AbaqusShift command with default parameters.
+NOTE: If you do not want change amplitude values but only format, change
+      first x value and use AbaqusScale command with default parameters.
 
     +---------------------------------------------+
     |abaqus_model.inp=============================|
@@ -985,8 +1030,8 @@ value and use AbaqusScale/AbaqusShift command with default parameters.
     |                                             |
     +---------------------------------------------+
 
-Note: Always keep in mind that format of first x-value plays a role.
-In some situations you can loose some data during amplitude operations.
+NOTE: Always keep in mind that format of first x-value plays a role.
+      In some situations you can loose some data during amplitude operations.
 
     +---------------------------------------------+
     |abaqus_model.inp=============================|
@@ -1085,8 +1130,6 @@ VIM has a lot of helpful options to work with many files. You can use them
 to work with Abaqus include files if your model use them. The plugin setups
 those function to work with Abaqus *INCLUDE keyword.
 
-Please see VIM documentation for details how to work with buffers.
-
 --------------------------------------------------------------------------------
 8.1. File name completion                                   *abaqus-includeName*
 
@@ -1145,13 +1188,13 @@ Select include file:
 --------------------------------------------------------------------------------
 8.2. Include jumps                                          *abaqus-includeJump*
 
-To jump from master deck into include file you can use gf or gF commands.
+To jump from master deck into include file you can use <gf> or <gF> commands.
 
 Jump commands:
-- gf : open include file in current window
-- gF : will split window and open the file in new window
+- <gf> : open include file in current window
+- <gF> : open include file in new window
 
-*NOTE gf is abbreviation from "go file"
+NOTE gf is abbreviation from "go file"
 
 Put cursor on the line with include keyword:
 
@@ -1170,7 +1213,7 @@ Put cursor on the line with include keyword:
     |                                             |
     +---------------------------------------------+
 
-Use gf or gF to jump:
+Use <gf> or <gF> to jump:
 
     +---------------------------------------------+
     |include_B.inc================================|
@@ -1188,12 +1231,12 @@ Use gf or gF to jump:
     |                                             |
     +---------------------------------------------+
 
-*NOTE Jump commands work also when *INLCUDE line is commented.
+NOTE: Jump commands work also when *INLCUDE line is commented.
 
 --------------------------------------------------------------------------------
 8.3. Checkpath                                                *abaqus-checkpath*
 
-VIM command :checkpath can be used to test have all your paths and include
+VIM command :checkpath can be used to test are all your paths and include
 names are valid.
 
     +---------------------------------------------+
@@ -1244,7 +1287,7 @@ names are valid.
 ================================================================================
 10. License                                                    *abaqus-license*
 
-Ls-Dyna filetype plugin for VIM
+Abaqus filetype plugin for VIM
 Copyright (C) 2014 Bartosz Gradzik (bartosz.gradzik@hotmail.com)
 
 This program is free software: you can redistribute it and/or modify

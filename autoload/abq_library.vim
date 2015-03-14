@@ -151,7 +151,7 @@ function! abq_library#initLib(path)
   "-----------------------------------------------------------------------------
 
   " get all *.inp files from keyword directory
-  let files = split(globpath(a:path, '*.inp'))
+  let files = split(globpath(a:path, '**/*.inp'))
 
   " initialize abaqus library
   let keyLib = {}

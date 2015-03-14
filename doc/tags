@@ -21,6 +21,7 @@ abaqus-mappings	abaqus.txt	/*abaqus-mappings*
 abaqus-numberFormat	abaqus.txt	/*abaqus-numberFormat*
 abaqus-refMesh	abaqus.txt	/*abaqus-refMesh*
 abaqus-resample	abaqus.txt	/*abaqus-resample*
+abaqus-reverse	abaqus.txt	/*abaqus-reverse*
 abaqus-scale	abaqus.txt	/*abaqus-scale*
 abaqus-shift	abaqus.txt	/*abaqus-shift*
 abaqus-start	abaqus.txt	/*abaqus-start*

@@ -5,7 +5,7 @@
 " Language:     Abaqus FE solver input file
 " Maintainer:   Bartosz Gradzik <bartosz.gradzik@hotmail.com>
 " Last Change:  15th of November 2014
-" Version:      1.1.1
+" Version:      1.0.0
 "
 " History of change:
 " v1.0.0
@@ -99,7 +99,7 @@ endfunction
 setlocal includeexpr=AbqIncludeName(v:fname)
 
 " always set current working directory respect to open file
-augroup abaqusPWD
+augroup abaqus
   autocmd!
   " set working directory to current file
   cd %:p:h
@@ -107,6 +107,7 @@ augroup abaqusPWD
   autocmd BufReadPost * cd %:p:h
   autocmd WinEnter * cd %:p:h
   autocmd TabEnter * cd %:p:h
+  autocmd BufWrite * set ff=unix
 augroup END
 
 "-------------------------------------------------------------------------------
@@ -195,6 +196,9 @@ command! -buffer -range -nargs=* AbaqusAddPoint
 
 command! -buffer -range AbaqusSwap
  \ :call abq_amplitudes#Swap(<line1>,<line2>)
+
+command! -buffer -range AbaqusReverse
+ \ :call abq_amplitudes#Reverse(<line1>,<line2>)
 
 command! -buffer -range AbaqusRefMesh
  \ :call abq_refMesh#RefMesh(<line1>,<line2>)

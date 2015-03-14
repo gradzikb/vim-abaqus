@@ -4,8 +4,12 @@
 "
 " Language:     Abaqus FE solver input file
 " Maintainer:   Bartosz Gradzik <bartosz.gradzik@hotmail.com>
-" Last Change:  16th of November 2014
-" Version:      1.0.0
+" Last Change:  14th of March 2015
+" Version:      1.1.0
+"
+" History of change:
+" v1.1.0
+"   - Reverse function added
 "
 " History of change:
 " v1.0.0
@@ -407,6 +411,35 @@ function! abq_amplitudes#Swap(line1,line2)
     let points[i] = points[i+1]
     let points[i+1] = tmpPoint
   endfor
+
+  " remove old lines
+  execute a:line1 . "," . a:line2 . "delete"
+
+  " save data
+  call abq_amplitudes#Write(a:line1, points, strFormat)
+
+endfunction
+
+"-------------------------------------------------------------------------------
+
+function!  abq_amplitudes#Reverse(line1,line2)
+
+  "-----------------------------------------------------------------------------
+  " Function to reverse amplitude.
+  " Arguments:
+  " - a:line1 : first selected line
+  " - a:line2 : last selected line
+  " Return:
+  " - none
+  "-----------------------------------------------------------------------------
+
+  " what number format?
+  let line1 = split(getline(a:line1), '\s*,\s*\|\s\+')
+  let strFormat = abq_amplitudes#WhatNumFormat(line1[0], 16) . "%1s"
+  \             . abq_amplitudes#WhatNumFormat(line1[0], 15)
+
+  " collect the data and reverse them
+  let points = reverse(abq_amplitudes#Read(a:line1,a:line2))
 
   " remove old lines
   execute a:line1 . "," . a:line2 . "delete"
