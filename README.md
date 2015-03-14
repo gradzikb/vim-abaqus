@@ -5,7 +5,7 @@
 
 What is Abaqus filetype plugin?
 
-It's set of scripts for VIM to speed up work with Abaqus inputdeck file.
+It's just bunch of VIM scripts to speed up work with Abaqus inputdeck file.
 
 ##Main plugin features
 - Syntax highlighting
@@ -13,20 +13,22 @@ It's set of scripts for VIM to speed up work with Abaqus inputdeck file.
 - Keyword completion
 - Useful commands, functions and mappings
 
-####Syntax highlighting
-With color syntax it's easier to navigate through a keyword file.
+###Syntax highlighting
+With color syntax it's easier to navigate through a inputdeck file.
 
-![vimAbaqusColorSyntax](https://raw.github.com/wiki/gradzikb/vim-abaqus/gifs/vimAbaqusColorSyntax.gif)
+![syntax](https://raw.github.com/wiki/gradzikb/vim-abaqus/gifs/vimAbaqusColorSyntax.gif)
 
-####Folding
+###Folding
 Node & element table folding, no more never ending scrolling.
 
-![vimAbaqusFolding](https://raw.github.com/wiki/gradzikb/vim-abaqus/gifs/vimAbaqusFolding.gif)
+![folding](https://raw.github.com/wiki/gradzikb/vim-abaqus/gifs/vimAbaqusFolding.gif)
 
-####Keyword completion
+See VIM documentation for details about foldings: `:help usr_28`
+
+###Keyword completion
 With keyword completion you can in easy way add a new Abaqus keyword or update existing one.
 
-![vimAbaqusKeywordCompletion](https://raw.github.com/wiki/gradzikb/vim-abaqus/gifs/vimAbaqusKeywordCompletion.gif)
+![completion](https://raw.github.com/wiki/gradzikb/vim-abaqus/gifs/vimAbaqusKeywordCompletion.gif)
 
 ####Amplitude commands
 You can use commands to operate with amplitude data directly in VIM.
@@ -34,10 +36,15 @@ You can use commands to operate with amplitude data directly in VIM.
 ![vimAbaqusAmpCommand](https://raw.github.com/wiki/gradzikb/vim-abaqus/gifs/vimAbaqusAmpCommand.gif)
 
 ####Commands, functions & mappings
-The plugin has couple of great mappings/functions to make your work even faster.
+The plugin has couple of great functions to make your work even faster:
+- mappings
+- comment/uncomment
+- data line autoformating
+- reference mesh
 
-##Wiki
-More detail overview of the plugin you can find on [wiki pages](https://github.com/gradzikb/vim-abaqus/wiki/Home).
+Detail list of all of them is in the plugin documentation: `:help abaqus-functions`
+
+##Example
 
 The plugin in action you can see [here](https://github.com/gradzikb/vim-abaqus/wiki/Example).
 
