@@ -30,12 +30,12 @@ With keyword completion you can in easy way add a new Abaqus keyword or update e
 
 ![completion](https://raw.github.com/wiki/gradzikb/vim-abaqus/gifs/vimAbaqusKeywordCompletion.gif)
 
-####Amplitude commands
+###Amplitude commands
 You can use commands to operate with amplitude data directly in VIM.
 
 ![vimAbaqusAmpCommand](https://raw.github.com/wiki/gradzikb/vim-abaqus/gifs/vimAbaqusAmpCommand.gif)
 
-####Commands, functions & mappings
+###Commands, functions & mappings
 The plugin has couple of great functions to make your work even faster:
 - mappings
 - comment/uncomment
