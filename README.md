@@ -23,8 +23,6 @@ Node & element table folding, no more never ending scrolling.
 
 ![folding](https://raw.github.com/wiki/gradzikb/vim-abaqus/gifs/vimAbaqusFolding.gif)
 
-See VIM documentation for details about foldings: `:help usr_28`
-
 ###Keyword completion
 With keyword completion you can in easy way add a new Abaqus keyword or update existing one.
 
@@ -40,9 +38,7 @@ The plugin has couple of great functions to make your work even faster:
 - mappings
 - comment/uncomment
 - data line autoformating
-- reference mesh
-
-Detail list of all of them is in the plugin documentation: `:help abaqus-functions`
+- reference mesh conversion
 
 ##Example
 
