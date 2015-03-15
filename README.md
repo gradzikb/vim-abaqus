@@ -16,22 +16,22 @@ It's just bunch of VIM scripts to speed up work with Abaqus inputdeck file.
 ###Syntax highlighting
 With color syntax it's easier to navigate through a inputdeck file.
 
-![syntax](https://raw.github.com/wiki/gradzikb/vim-abaqus/gifs/vimAbaqusColorSyntax.gif)
+![syntax](https://raw.github.com/wiki/gradzikb/vim-abaqus/gifs/syntax.gif)
 
 ###Folding
 Node & element table folding, no more never ending scrolling.
 
-![folding](https://raw.github.com/wiki/gradzikb/vim-abaqus/gifs/vimAbaqusFolding.gif)
+![folding](https://raw.github.com/wiki/gradzikb/vim-abaqus/gifs/folding.gif)
 
 ###Keyword completion
 With keyword completion you can in easy way add a new Abaqus keyword or update existing one.
 
-![completion](https://raw.github.com/wiki/gradzikb/vim-abaqus/gifs/vimAbaqusKeywordCompletion.gif)
+![completion](https://raw.github.com/wiki/gradzikb/vim-abaqus/gifs/completion.gif)
 
 ###Amplitude commands
 You can use commands to operate with amplitude data directly in VIM.
 
-![vimAbaqusAmpCommand](https://raw.github.com/wiki/gradzikb/vim-abaqus/gifs/vimAbaqusAmpCommand.gif)
+![vimAbaqusAmpCommand](https://raw.github.com/wiki/gradzikb/vim-abaqus/gifs/commands.gif)
 
 ###Commands, functions & mappings
 The plugin has couple of great functions to make your work even faster:
