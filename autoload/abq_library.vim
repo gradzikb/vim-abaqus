@@ -5,9 +5,19 @@
 " Language:     VIM Script
 " Filetype:     Abaqus FE solver input file
 " Maintainer:   Bartosz Gradzik <bartosz.gradzik@hotmail.com>
-" Last Change:  22th of November 2014
+" Last Change:  27th of March 2015
 "
 "-------------------------------------------------------------------------------
+"
+" v1.0.1
+"   - library behaviour improved
+"     - abq_library#getKeyword() function updated,
+"       empty strings are removed from keyword options list now
+"     - abq_library#evalKeyword() function updated,
+"       regex for comparison between options from inputdeck and library
+"       updated, support names with "-" inside
+"   - user sort function added: abq_library#sort()
+"     completion lists looks nicer, shorter words are at the beginning
 "
 " v1.0.0
 "   - initial version
@@ -39,6 +49,36 @@ function! abq_library#clean(str, flag)
   let str = toupper(str)
 
   return str
+
+endfunction
+
+"-------------------------------------------------------------------------------
+
+function! abq_library#sort(list)
+
+  "-----------------------------------------------------------------------------
+  " Small function to sort strings in the list.
+  "
+  " By default VIM sort() function works like:
+  " sort(["aaa", "zzz", "aaa bbb"]) = ["aaa bbb", "aaa", "zzz"]
+  "
+  " The function works like:
+  " abq_library#sort(["aaa", "zzz", "aaa bbb"]) = ["aaa", "aaa bbb", "zzz"]
+  "
+  " Arguments:
+  " - list : list with items to sort
+  " Return:
+  " - sortList : list with sorted items
+  "-----------------------------------------------------------------------------
+
+  " substitute all " " to "_"
+  call map(a:list, 'substitute(v:val, " ", "_", "")')
+  " sort with VIM default function
+  call sort(a:list)
+  " substitute back from "_" to " "
+  call map(a:list, 'substitute(v:val, "_", " ", "")')
+
+  return a:list
 
 endfunction
 
@@ -91,6 +131,8 @@ function! abq_library#getKeyword()
 
   " clean data-in
   let keyw = map(split(kwLine, '\s*,\s*'), 'abq_library#clean(v:val,1)')
+  " remove empty strings
+  call filter(keyw, 'len(v:val) != 0')
 
   " build keyword dictionary representation
   let kwDict = {}
@@ -129,7 +171,10 @@ function! abq_library#evalKeyword(kwInp, kwLib)
   " check which options are already in use and remove them
   let kwOptNotUsed = copy(a:kwLib[kwName])
   for kwOpt in a:kwInp[kwName]
-    let regPat = '^' . kwOpt . '=\?\(\a\|\s\)*$'
+    " regex at the end is need because inputdeck options have only names.
+    " Values are not read from input. Options from the library may have
+    " name=value format.
+    let regPat = '^' . kwOpt . '=\?\(\s\|\w\|-\)*$'
     call filter(kwOptNotUsed, 'v:val !~? regPat')
   endfor
 
@@ -219,7 +264,7 @@ function! abq_library#omniComp(findstart, base)
     if a:base[0] == '*'
 
       " completion loop
-      for kwName in sort(keys(g:abqKeyLib))
+      for kwName in abq_library#sort(keys(g:abqKeyLib))
         if kwName =~? '^' . a:base[1:]
           call add(compRes, '*' . kwName)
         endif
@@ -230,12 +275,11 @@ function! abq_library#omniComp(findstart, base)
 
       " get keyword definition
       let kw = abq_library#getKeyword()
-      echom string(kw)
       " crosscheck with keyword library
       let kwOptions = abq_library#evalKeyword(kw, g:abqKeyLib)
 
       " completion loop
-      for optName in sort(kwOptions)
+      for optName in abq_library#sort(kwOptions)
         if optName =~? '^' . a:base
           call add(compRes, optName)
         endif
