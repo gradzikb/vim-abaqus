@@ -39,6 +39,7 @@ The plugin has couple of great functions to make your work even faster:
 - comment/uncomment
 - data line autoformating
 - reference mesh conversion
+- templates library
 
 ##Example
 
