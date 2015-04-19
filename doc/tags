@@ -13,6 +13,7 @@ abaqus-includeName	abaqus.txt	/*abaqus-includeName*
 abaqus-includes	abaqus.txt	/*abaqus-includes*
 abaqus-insertKeyword	abaqus.txt	/*abaqus-insertKeyword*
 abaqus-insertOption	abaqus.txt	/*abaqus-insertOption*
+abaqus-insertTemplate	abaqus.txt	/*abaqus-insertTemplate*
 abaqus-introduction	abaqus.txt	/*abaqus-introduction*
 abaqus-keywordCompletion	abaqus.txt	/*abaqus-keywordCompletion*
 abaqus-keywordLibrary	abaqus.txt	/*abaqus-keywordLibrary*
@@ -27,4 +28,6 @@ abaqus-shift	abaqus.txt	/*abaqus-shift*
 abaqus-start	abaqus.txt	/*abaqus-start*
 abaqus-swap	abaqus.txt	/*abaqus-swap*
 abaqus-syntax	abaqus.txt	/*abaqus-syntax*
+abaqus-templateLibrary	abaqus.txt	/*abaqus-templateLibrary*
+abaqus-templatsCompletion	abaqus.txt	/*abaqus-templatsCompletion*
 abaqus.txt	abaqus.txt	/*abaqus.txt*

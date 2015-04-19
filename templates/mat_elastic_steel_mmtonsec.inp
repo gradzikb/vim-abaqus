@@ -1,0 +1,8 @@
+*MATERIAL, NAME=Steel
+*DENSITY
+** ro [ton/mm^3]
+        7.85e-09
+*ELASTIC, TYPE=ISOTROPIC
+** E [Mpa], v [-]
+ 210.0e+03,   0.3
+**

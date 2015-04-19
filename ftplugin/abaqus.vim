@@ -4,8 +4,12 @@
 "
 " Language:     Abaqus FE solver input file
 " Maintainer:   Bartosz Gradzik <bartosz.gradzik@hotmail.com>
-" Last Change:  15th of November 2014
-" Version:      1.0.0
+" Last Change:  19th of Abaqus 2014
+" Version:      1.1.0
+"
+" History of change:
+" v1.1.0
+"   - template library added
 "
 " History of change:
 " v1.0.0
@@ -170,6 +174,37 @@ endif
 
 " set user completion function to run with <C-X><C-O>
 setlocal omnifunc=abq_library#omniComp
+
+"-------------------------------------------------------------------------------
+"    TEMPLATES LIBRARY
+"-------------------------------------------------------------------------------
+
+" act <up> and <down> like Ctrl-p and Ctrl-n
+inoremap <buffer><silent><script><expr> <Down>
+ \ pumvisible() ? "\<C-n>" : "\<Down>"
+inoremap <buffer><silent><script><expr> <Up>
+ \ pumvisible() ? "\<C-p>" : "\<Up>"
+
+" set path to template library directory
+if !exists("g:abaqusTemLibPath")
+  let g:abaqusTemLibPath = expand('<sfile>:p:h:h') . '/templates/'
+endif
+
+" set user completion flag
+let b:abaqusUserComp = 0
+
+" set user completion function to run with <C-X><C-U>
+setlocal completefunc=abq_templates#CompleteKeywords
+
+" mapping for <CR>/<C-Y>/<kEnter>
+" if g:abaqusUserComp is true run GetCompletion function
+" if g:abaqusUserComp is false act like <CR>/<C-Y>/<kEnter>
+inoremap <buffer><silent><script><expr> <CR>
+ \ b:abaqusUserComp ? "\<ESC>:call abq_templates#GetCompletion()\<CR>" : "\<CR>"
+inoremap <buffer><silent><script><expr> <C-Y>
+ \ b:abaqusUserComp ? "\<ESC>:call abq_templates#GetCompletion()\<CR>" : "\<C-Y>"
+inoremap <buffer><silent><script><expr> <kEnter>
+ \ b:abaqusUserComp ? "\<ESC>:call abq_templates#GetCompletion()\<CR>" : "\<kEnter>"
 
 "-------------------------------------------------------------------------------
 "    LINE FORMATING
