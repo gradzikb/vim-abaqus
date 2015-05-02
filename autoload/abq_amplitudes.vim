@@ -4,14 +4,16 @@
 "
 " Language:     Abaqus FE solver input file
 " Maintainer:   Bartosz Gradzik <bartosz.gradzik@hotmail.com>
-" Last Change:  14th of March 2015
-" Version:      1.1.0
+" Last Change:  2nd of May 2015
+" Version:      1.2.0
+"
+"-------------------------------------------------------------------------------
 "
 " History of change:
+" v1.2.0
+"   - Reverse function fixed
 " v1.1.0
 "   - Reverse function added
-"
-" History of change:
 " v1.0.0
 "   - initial version
 "
@@ -438,14 +440,33 @@ function!  abq_amplitudes#Reverse(line1,line2)
   let strFormat = abq_amplitudes#WhatNumFormat(line1[0], 16) . "%1s"
   \             . abq_amplitudes#WhatNumFormat(line1[0], 15)
 
-  " collect the data and reverse them
-  let points = reverse(abq_amplitudes#Read(a:line1,a:line2))
+  " collect the data
+  let points = abq_amplitudes#Read(a:line1,a:line2)
+
+  " split (x,y) list into x & y vectors
+  let x = []
+  let y = []
+  for i in range(0,len(points)-1,2)
+    call add(x, points[i])
+    call add(y, points[i+1])
+  endfor
+
+  " revers x & y vectors
+  call reverse(x)
+  call reverse(y)
+
+  " combine x & y vectors
+  let revPoints = []
+  for i in range(len(x))
+    call add(revPoints, x[i])
+    call add(revPoints, y[i])
+  endfor
 
   " remove old lines
   execute a:line1 . "," . a:line2 . "delete"
 
   " save data
-  call abq_amplitudes#Write(a:line1, points, strFormat)
+  call abq_amplitudes#Write(a:line1, revPoints, strFormat)
 
 endfunction
 
