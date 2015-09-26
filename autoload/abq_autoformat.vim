@@ -5,9 +5,12 @@
 " Language:     VIM Script
 " Filetype:     Abaqus FE solver input file
 " Maintainer:   Bartosz Gradzik <bartosz.gradzik@hotmail.com>
-" Last Change:  16th of November 2014
+" Last Change:  26th of September 2015
 "
 "-------------------------------------------------------------------------------
+"
+" v1.0.1
+"   - amplitude dataline support parameter as well
 "
 " v1.0.0
 "   - initial version
@@ -339,7 +342,7 @@ function! abq_autoformat#AbaqusLine() range
   "-----------------------------------------------------------------------------
   " amplitude dataline
 
-  elseif line !~? '=' && line=~? '^[ 0-9.eE+\-]\+,\?[ 0-9.eE+\-]\+'
+  elseif line !~? '=' && line=~? '^[ <>0-9.eE+\-]\+,\?[ <>0-9.eE+\-]\+'
 
     " format amplitude datalines
     call abq_autoformat#AmpDataline(a:firstline, a:lastline)
