@@ -1,4 +1,4 @@
-*abaqus.txt*		For Vim version 7.4			Last change: 2015 March 14
+*abaqus.txt*		For Vim version 7.4			Last change: 2015 December 22
 ================================================================================
                         _    _                                                 ~
                        / \  | |__   __ _  __ _ _   _ ___                       ~
@@ -19,30 +19,37 @@ CONTENTS
     3. Syntax highlighting.....................|abaqus-syntax|
     4. Folding.................................|abaqus-folding|
     5. Keyword completion......................|abaqus-keywordCompletion|
-       5.1. Inserting keywords.................|abaqus-insertKeyword|
-       5.1. Inserting keyword options..........|abaqus-insertOption|
-       5.3. Keyword library....................|abaqus-keywordLibrary|
+       5.1 Inserting keywords..................|abaqus-insertKeyword|
+       5.1 Inserting keyword options...........|abaqus-insertOption|
+       5.3 Keyword library.....................|abaqus-keywordLibrary|
     6. Templates completion....................|abaqus-templateCompletion|
-       6.1. Inserting templates................|abaqus-insertTemplate|
-       6.2. Templates library..................|abaqus-templateLibrary|
+       6.1 Inserting templates.................|abaqus-insertTemplate|
+       6.2 Templates library...................|abaqus-templateLibrary|
     7. Plugin functions........................|abaqus-functions|
-       7.1. Mappings list......................|abaqus-mappings|
-       7.2. Commenting.........................|abaqus-comment|
-       7.3. Autoformating......................|abaqus-autoFormat|
+       7.1 Mappings list.......................|abaqus-mappings|
+       7.2 Commenting..........................|abaqus-comment|
+       7.3 Autoformating.......................|abaqus-autoFormat|
     8. Commands................................|abaqus-commands|
-       8.1. Amplitude commands.................|abaqus-ampCommands|
-            8.1.1. AbaqusScale.................|abaqus-scale|
-            8.1.2. AbaqusShift.................|abaqus-shift|
-            8.1.3. AbaqusAddPoint..............|abaqus-addPoint|
-            8.1.4. AbaqusResample..............|abaqus-resample|
-            8.1.5. AbaqusSwap..................|abaqus-swap|
-            8.1.6. AbaqusReverse...............|abaqus-reverse|
-       8.2. Number format......................|abaqus-numberFormat|
-       8.3. Reference mesh.....................|abaqus-refMesh|
+       8.1 Amplitude commands..................|abaqus-amplitudeCommands|
+           8.1.1 AbqAmplitudeScale.............|abaqus-amplitudeScale|
+           8.1.2 AbqAmplitudeShift.............|abaqus-amplitudeShift|
+           8.1.3 AbqAmplitudeAddPoint..........|abaqus-amplitudeAddPoint|
+           8.1.4 AbqAmplitudeResample..........|abaqus-amplitudeResample|
+           8.1.5 AbqAmplitudeSwapXY............|abaqus-amplitudeSwapXY|
+           8.1.6 AbqAmplitudeReverse...........|abaqus-amplitudeReverse|
+       8.2 Node commands.......................|abaqus-nodeCommands|
+           8.2.1 AbqNodeScale..................|abaqus-nodeScale|
+           8.2.2 AbqNodeShift..................|abaqus-nodeShift|
+           8.2.3 AbqNodeOffsetId...............|abaqus-nodeOffsetId|
+           8.2.4 AbqNodeReflect................|abaqus-nodeReflect|
+       8.3 Element commands....................|abaqus-elemCommands|
+           8.3.1 AbqElemOffsetId...............|abaqus-elemOffsetId|
+           8.3.2 AbqElemReverseNormals.........|abaqus-elemReverseNormals|
+           8.3.3 AbqElemRefMesh................|abaqus-elemRefMesh|
     9. Include files...........................|abaqus-includes|
-       9.1. File name completion...............|abaqus-includeName|
-       9.2. Include jumps......................|abaqus-includeJump|
-       9.3. Checkpath..........................|abaqus-checkpath|
+       9.1 File name completion................|abaqus-includeName|
+       9.2 Include jumps.......................|abaqus-includeJump|
+       9.3 Checkpath...........................|abaqus-checkpath|
    10. Credits.................................|abaqus-credits|
    11. License.................................|abaqus-license|
    12. Bugs....................................|abaqus-bugs|
@@ -50,9 +57,9 @@ CONTENTS
 ================================================================================
 1. Introduction                                            *abaqus-introduction*
 
-It is VIM filetype plugin for Abaqus inputdeck file.
+It is official documentation for Abqus VIM filetype plugin.
 
-Abaqus is simulation software from Simulia Dassault Systemes (www.3ds.com).
+Abaqus is a simulation software from Simulia Dassault Systemes (www.3ds.com).
 The inputdeck is a text file used to store all information about the model
 with keywords inside which follow specific syntax rules.
 
@@ -87,13 +94,6 @@ VIM message should be:
 >
 	filetype=abaqus
 <
-|abaqus-commands| require VIM version which support float operations.
-You can test your VIM installation with command:
->
-	echom has("float")
-<
-VIM prints 0 if float operations are not supported and 1 when they are.
-
 ================================================================================
 3. Syntax highlighting                                           *abaqus-syntax*
 
@@ -106,7 +106,7 @@ In keyword line following items are highlighted separately:
  - keyword option (NAME)
  - option value (amplitude_name)
 
-Two types of lines are highlighted as error line:
+Two types of lines are highlighted as error:
  - keyword/comment line not started in first column
  - line with only one "*"
 
@@ -128,9 +128,10 @@ With keyword completion you can:
 - extend keyword definition with all necessary keyword options
 
 --------------------------------------------------------------------------------
-5.1. Inserting keywords                                   *abaqus-insertKeyword*
+5.1 Inserting keywords                                    *abaqus-insertKeyword*
 
-In insert mode start typing keyword you want to and use <Ctrl-Tab>:
+In insert mode start typing keyword you want to use and hit <Ctrl-Tab>:
+
 NOTE: Keyword completion can be trigged with <Ctrl-x><Ctrl-o> as well.
 
     +---------------------------------------------+
@@ -236,7 +237,7 @@ NOTE: To get list of all available keywords use:
     +---------------------------------------------+
 
 --------------------------------------------------------------------------------
-5.2. Inserting keyword options                             *abaqus-insertOption*
+5.2 Inserting keyword options                              *abaqus-insertOption*
 
 Next step is to extend keyword with an option.
 
@@ -327,7 +328,7 @@ Multi line definition is supported as well:
     |                                             |
     +---------------------------------------------+
 
-NOTE: The list does not include options you already use!
+NOTE: The completion list does not include options you already use!
 
 --------------------------------------------------------------------------------
 5.3. Keyword library                                     *abaqus-keywordLibrary*
@@ -358,7 +359,7 @@ Keyword library structure:
 	      - ...
 	    - ...
 <
-Each *.inp file includes one keyword name with options.
+Each *.inp file includes one keyword with options.
 
     +---------------------------------------------+
     |amplitude.inp================================|
@@ -400,12 +401,12 @@ To define location of the keyword library put for all users in vimrc:
 
 With templates completion you can:
 - add group of Abaqus keyword definition into your inputdeck
-- setup a simple material database
 - define master deck with all necessary control keywords
 - define keywords with predefined values (system units)
+- setup a simple material database
 
 --------------------------------------------------------------------------------
-6.1. Inserting templates                                 *abaqus-insertTemplate*
+6.1 Inserting templates                                  *abaqus-insertTemplate*
 
 In insert mode start typing template name you want to and use <Ctrl-x><Ctrl-u>:
 
@@ -461,7 +462,8 @@ The template will be inserted into your model:
     |                                             |
     +---------------------------------------------+
 
-*Note: To get list of all templates use <Ctrl-x><Ctrl-u> at the beginning.
+*Note: To get list of all templates use <Ctrl-x><Ctrl-u> at the beginning
+       of the line.
 
     +---------------------------------------------+
     |abaqus_model.inp=============================|
@@ -479,7 +481,7 @@ The template will be inserted into your model:
     +---------------------------------------------+
 
 --------------------------------------------------------------------------------
-6.2. Template library                                   *abaqus-templateLibrary*
+6.2 Template library                                    *abaqus-templateLibrary*
 
 Template library is located in "templates" directory. Inside are *.inp files.
 Each file is one template.
@@ -531,9 +533,9 @@ with Abaqus inputdecks.
 <ll>@    : separator line above (is like <ll>2 with <Shift>)
 
 <ll> is <localleader> key in VIM. By default it is backslash "\".
-
+For details see VIM documentation ":help <LocalLeader>"
 --------------------------------------------------------------------------------
-7.2. Commenting                                                 *abaqus-comment*
+7.2 Commenting                                                  *abaqus-comment*
 
 The function is used to comment/uncomment line/lines in Abaqus keyword file.
 Function is mapped with <ALT-c> or <Ctrl-c>.
@@ -577,14 +579,14 @@ Use <Alt-c>:
 To uncomment select the same lines and use <Alt-c> once again.
 
 --------------------------------------------------------------------------------
-7.3. Autoformating                                           *abaqus-autoFormat*
+7.. Autoformating                                            *abaqus-autoFormat*
 
 The plugin has simple autoformating function. The function is trigged with
 <ll><ll> mapping ("\\" for default VIM settings). The function formats
 keyword, comment and data lines in one standard way.
 
 --------------------------------------------------------------------------------
-7.3.1. Keyword line formating
+7.3.1 Keyword line formating
 
 When the function is trigged on any keyword line whole keyword definition will
 be updated to new format.
@@ -603,7 +605,7 @@ Move cursor to any line of keyword definition:
     +---------------------------------------------+
     |abaqus_model.inp=============================|
     |**                                           |
-    |*amplitude, name=ampname,                    |
+    |*amplitude, name=ampName,                    |
    >|definition=TABULAR, SHIFTY=10.0,             |<
     |   Scalex=5.0                                |
     |   0.0,   0.0                                |
@@ -620,7 +622,7 @@ Run autoformating function:
     +---------------------------------------------+
     |abaqus_model.inp=============================|
     |**                                           |
-    |*AMPLITUDE, NAME=ampname,                    |
+    |*AMPLITUDE, NAME=ampName,                    |
     |            DEFINITION=TABULAR,              |
     |            SCALEX=10.0,                     |
     |            SHIFTY=5.0                       |
@@ -634,7 +636,7 @@ Run autoformating function:
     +---------------------------------------------+
 
 --------------------------------------------------------------------------------
-7.3.2. Amplitude datalines formating
+7.3.2 Amplitude datalines formating
 
 If autoformating function is used with amplitude datalines, the points are
 format into two columns (16 width each) with coma as separator.
@@ -643,9 +645,7 @@ The function is useful to convert:
  - old amplitude format (4 points per line) into new format (1 point per line)
  - curves from other third part softwares
 
-Examples of use are showed below.
-
---> Old Abaqus amplitude format to new one
+Examples of use (old Abaqus amplitude format to new):
 
 Make visual line selection for data lines:
 
@@ -684,7 +684,7 @@ Use <ll><ll> with selected lines:
     |                                             |
     +---------------------------------------------+
 
---> LsDyna *DEFINE_CURVE format to Abaqus *AMPLITUDE format
+Example of use (LsDyna *DEFINE_CURVE format to Abaqus *AMPLITUDE format):
 
 Make visual line selection for data lines:
 
@@ -721,7 +721,7 @@ Use <ll><ll> with selected lines:
     +---------------------------------------------+
 
 --------------------------------------------------------------------------------
-7.3.3. Comment line formating
+7.3.3 Comment line formating
 
 The function remove all white signs from beginning of the line till '**'.
 
@@ -762,25 +762,123 @@ Use <ll><ll> to align the line:
 ================================================================================
 8. Commands                                                    *abaqus-commands*
 
-8.1. Amplitude commands                                     *abaqus-ampCommands*
+The plugin gives you many useful commands to work with Abaqus inputdeck file.
 
-Amplitude command list:
-
-- :AbaqusScale    - scale x and/or y data
-- :AbaqusShift    - shift x and/or y data
-- :AbaqusAddpoint - add new point
-- :AbaqusResample - resample amplitude
-- :AbaqusSwap     - swap x and y columns
-- :AbaqusReverse  - reverse amplitude points
+Command sections:
+- amplitude commands : works with x & y data under *AMPLITUDE
+- node commands      : works with data lines under *NODE
+- element commands   : works with data lines under *ELEMENT
 
 --------------------------------------------------------------------------------
-8.1.1. AbaqusScale command                                        *abaqus-scale*
+8.1 Amplitude commands                                *abaqus-amplitudeCommands*
+
+Amplitude commands are design to work with x & y points under *AMPLITUDE.
+For instance you can do operation like scaling and shifting of the points,
+resampling the amplitude, extending the amplitude with new points.
+
+All amplitude commands unified number format of your points. First x-value
+control how all points will be saved into the file after operation.
+See example below to understand how it works.
+
+Select amplitude lines and run command
+
+    +---------------------------------------------+
+    |abaqus_model.inp=============================|
+    |**                                           |
+    |*AMPLITUDE, NAME=ampName                     |
+    |**       x,    y                             |
+   >|  0.00e+00,  0.0                             |<
+   >|       1.0,  1.0                             |<
+    |**                                           |
+    |command-line=================================+
+    |                                             |
+    +---------------------------------------------+
+>
+	:AbqAmplitudeScale 10.0 5.0
+<
+    +---------------------------------------------+
+    |abaqus_model.inp=============================|
+    |**                                           |
+    |*AMPLITUDE, NAME=ampName                     |
+    |**       x,         y                        |
+    |  0.00e+00,  0.00e+00                        |
+    |  1.00e+01,  5.00e+00                        |
+    |**                                           |
+    |command-line=================================+
+    |                                             |
+    +---------------------------------------------+
+
+Vales after scaling operation are save with new number format.
+
+You can use this function to change number format only, not values.
+Just update first x value and scale it with factor of 1.0.
+
+    +---------------------------------------------+
+    |abaqus_model.inp=============================|
+    |**                                           |
+    |*AMPLITUDE, NAME=ampName                     |
+    |**        x,    y                            |
+   >| 0.0000e+00,  0.0                            |<
+   >|        1.0,  1.0                            |<
+    |**                                           |
+    |command-line=================================+
+    |                                             |
+    +---------------------------------------------+
+>
+	:AbqAmplitudeScale
+<
+    +---------------------------------------------+
+    |abaqus_model.inp=============================|
+    |**                                           |
+    |*AMPLITUDE, NAME=ampName                     |
+    |**        x,           y                     |
+    | 0.0000e+00,  0.0000e+00                     |
+    | 1.0000e+00,  1.0000e+00                     |
+    |**                                           |
+    |command-line=================================+
+    |                                             |
+    +---------------------------------------------+
+
+NOTE: Always keep in mind that format of first x value is important.
+      In some situations you can loose some data during curve operations.
+
+    +---------------------------------------------+
+    |abaqus_model.inp=============================|
+    |**                                           |
+    |*AMPLITUDE, NAME=ampName                     |
+    |**    x,      y                              |
+   >|    0.0,    0.0                              |<
+   >|  0.001,  0.005                              |<
+    |**                                           |
+    |command-line=================================+
+    |                                             |
+    +---------------------------------------------+
+>
+	:AbqAmplitudeShift 0.01
+<
+    +---------------------------------------------+
+    |abaqus_model.inp=============================|
+    |**                                           |
+    |*AMPLITUDE, NAME=ampName                     |
+    |**  x,    y                                  |
+    |  0.0,  0.0                                  |
+    |  0.0,  0.0                                  |
+    |**                                           |
+    |command-line=================================+
+    |                                             |
+    +---------------------------------------------+
+
+As you can see after shifting data precision has been lost since first x value
+has only one decimal place.
+
+--------------------------------------------------------------------------------
+8.1.1 AbqAmplitudeScale command                          *abaqus-amplitudeScale*
 
 Description:
 Scale x and/or y value on the amplitude.
 
 Syntax:
-:AbaqusScale x_sf y_sf
+:AbqAmplitudeScale x_sf y_sf
 
 Arguments:
 x_sf - scaling factor for x data (default value 1.0)
@@ -802,7 +900,7 @@ Make visual selection line with data lines:
     |                                             |
     +---------------------------------------------+
 >
-	:AbaqusScale 10.0 5.0
+	:AbqAmplitudeScale 10.0 5.0
 <
     +---------------------------------------------+
     |abaqus_model.inp=============================|
@@ -817,13 +915,13 @@ Make visual selection line with data lines:
     +---------------------------------------------+
 
 --------------------------------------------------------------------------------
-8.1.2. AbaqusShift command                                        *abaqus-shift*
+8.1.2 AbqAmplitudeShift command                          *abaqus-amplitudeShift*
 
 Description:
 Shift x and/or y values on the amplitude.
 
 Syntax:
-:AbaqusShift x_shift y_shift
+:AbqAmplitudeShift x_shift y_shift
 
 Arguments:
 x_shift - offset value for x data (default value 0.0)
@@ -845,7 +943,7 @@ Make visual selection line with data lines:
     |                                             |
     +---------------------------------------------+
 >
-	:AbaqusShift 10.0 5.0
+	:AbqAmplitudeShift 10.0 5.0
 <
     +---------------------------------------------+
     |abaqus_model.inp=============================|
@@ -860,15 +958,15 @@ Make visual selection line with data lines:
     +---------------------------------------------+
 
 --------------------------------------------------------------------------------
-8.1.3. AbaqusAddPoint command                                  *abaqus-addPoint*
+8.1.3 AbqAmplitudeAddPoint command                    *abaqus-amplitudeAddPoint*
 
 Description:
-AbaqusAddPoint insert a new point for x user value. For points outside range new
+The command insert a new point for x user value. For points outside range new
 y value is linear extrapolated base on two first or two last points. For points
 inside the range new y value is linear interpolated base on the nearest points.
 
 Synatx:
-:AbaqusAddPoint x
+:AbqAmplitudeAddPoint x
 
 Arguments:
 x - user x value for new point
@@ -889,7 +987,7 @@ Make visual selection line with data lines:
     |                                             |
     +---------------------------------------------+
 >
-	:AbaqusAddPoint -1.0
+	:AbqAmplitudeAddPoint -1.0
 <
     +---------------------------------------------+
     |abaqus_model.inp=============================|
@@ -904,7 +1002,7 @@ Make visual selection line with data lines:
     |                                             |
     +---------------------------------------------+
 >
-	:AbaqusAddPoint 0.5
+	:AbqAmplitudeAddPoint 0.5
 <
     +---------------------------------------------+
     |abaqus_model.inp=============================|
@@ -919,7 +1017,7 @@ Make visual selection line with data lines:
     |                                             |
     +---------------------------------------------+
 >
-	:AbaqusAddPoint 4.0
+	:AbqAmplitudeAddPoint 4.0
 <
     +---------------------------------------------+
     |abaqus_model.inp=============================|
@@ -935,14 +1033,14 @@ Make visual selection line with data lines:
     +---------------------------------------------+
 
 --------------------------------------------------------------------------------
-8.1.4. AbaqusResample command                                  *abaqus-resample*
+8.1.4 AbqAmplitudeResample command                    *abaqus-amplitudeResample*
 
 Description:
 Command allow you to resample the amplitude with new number of points.
 
 Synatx:
-:AbaqusResample -i incr
-:AbaqusResample -p nump
+:AbqAmplitudeResample -i incr
+:AbqAmplitudeResample -p nump
 
 Arguments:
 incr - increment
@@ -964,7 +1062,7 @@ Make visual selection line with data lines:
     |                                             |
     +---------------------------------------------+
 >
-	:AbaqusResample -i 0.2
+	:AbqAmplitudeResample -i 0.2
 <
     +---------------------------------------------+
     |abaqus_model.inp=============================|
@@ -982,7 +1080,7 @@ Make visual selection line with data lines:
     |                                             |
     +---------------------------------------------+
 >
-	:AbaqusResample -p 6
+	:AbqAmplitudeResample -p 6
 <
     +---------------------------------------------+
     |abaqus_model.inp=============================|
@@ -1001,13 +1099,16 @@ Make visual selection line with data lines:
     +---------------------------------------------+
 
 --------------------------------------------------------------------------------
-8.1.5. AbaqusSwap command                                          *abaqus-swap*
+8.1.5 AbqAmplitudeSwapXY command                        *abaqus-amplitudeSwapXY*
 
 Description:
 Command allow you to swap x and y column.
 
 Synatx:
-:AbaqusSwap
+:AbqAmplitudeSwapXY
+
+Arguments:
+None
 
 Example of use:
 
@@ -1025,7 +1126,7 @@ Make visual selection line with data lines:
     |                                             |
     +---------------------------------------------+
 >
-	:AbaqusSwap
+	:AbqAmplitudeSwapXY
 <
     +---------------------------------------------+
     |abaqus_model.inp=============================|
@@ -1040,13 +1141,16 @@ Make visual selection line with data lines:
     +---------------------------------------------+
 
 --------------------------------------------------------------------------------
-8.1.6. AbaqusReverse command                                    *abaqus-reverse*
+8.1.6 AbqAmplitudeReverse command                      *abaqus-amplitudeReverse*
 
 Description:
 Reverse order of curve data points.
 
 Synatx:
-:AbaqusReverse
+:AbqAmplitudeReverse
+
+Arguments:
+None
 
 Example of use:
 
@@ -1068,18 +1172,18 @@ Make visual selection line with data lines:
     |                                             |
     +---------------------------------------------+
 >
-	:AbaqusReverse
+	:AbqAmplitudeReverse
 <
     +---------------------------------------------+
     |abaqus_model.inp=============================|
     |**                                           |
     |*AMPLITUDE, NAME=ampName                     |
-   >|   10.0,    10.0                             |<
-   >|    8.0,     8.0                             |<
-   >|    6.0,     6.0                             |<
-   >|    4.0,     4.0                             |<
-   >|    2.0,     2.0                             |<
-   >|    0.0,     0.0                             |<
+    |   10.0,    10.0                             |
+    |    8.0,     8.0                             |
+    |    6.0,     6.0                             |
+    |    4.0,     4.0                             |
+    |    2.0,     2.0                             |
+    |    0.0,     0.0                             |
     |**                                           |
     |~                                            |
     |command-line=================================+
@@ -1087,102 +1191,368 @@ Make visual selection line with data lines:
     +---------------------------------------------+
 
 --------------------------------------------------------------------------------
-8.2. Number format                                         *abaqus-numberFormat*
+8.2 Node commands                                          *abaqus-nodeCommands*
 
-Each function uses number format from first x value.
-
-    +---------------------------------------------+
-    |abaqus_model.inp=============================|
-    |**                                           |
-    |*AMPLITUDE, NAME=ampName                     |
-   >|   0.00e+00,   0.0                           |<
-   >|        1.0,   1.0                           |<
-    |**                                           |
-    |~                                            |
-    |command-line=================================+
-    |                                             |
-    +---------------------------------------------+
->
-	:AbaqusScale 10.0 5.0
-<
-    +---------------------------------------------+
-    |abaqus_model.inp=============================|
-    |**                                           |
-    |*AMPLITUDE, NAME=ampName                     |
-    |   0.00e+00,   0.00e+00                      |
-    |   1.00e+01,   5.00e+00                      |
-    |**                                           |
-    |~                                            |
-    |command-line=================================+
-    |                                             |
-    +---------------------------------------------+
-
-NOTE: If you do not want change amplitude values but only format, change
-      first x value and use AbaqusScale command with default parameters.
-
-    +---------------------------------------------+
-    |abaqus_model.inp=============================|
-    |**                                           |
-    |*AMPLITUDE, NAME=ampName                     |
-   >|   0.00e+00,   0.0                           |<
-   >|        1.0,   1.0                           |<
-    |**                                           |
-    |~                                            |
-    |command-line=================================+
-    |                                             |
-    +---------------------------------------------+
->
-	:AbaqusScale
-<
-    +---------------------------------------------+
-    |abaqus_model.inp=============================|
-    |**                                           |
-    |*AMPLITUDE, NAME=ampName                     |
-    |   0.00e+00,   0.00e+00                      |
-    |   1.00e+00,   1.00e+00                      |
-    |**                                           |
-    |~                                            |
-    |command-line=================================+
-    |                                             |
-    +---------------------------------------------+
-
-NOTE: Always keep in mind that format of first x-value plays a role.
-      In some situations you can loose some data during amplitude operations.
-
-    +---------------------------------------------+
-    |abaqus_model.inp=============================|
-    |**                                           |
-    |*AMPLITUDE, NAME=ampName                     |
-   >|     0.0,     0.0                            |<
-   >|   0.001,   0.005                            |<
-    |**                                           |
-    |~                                            |
-    |command-line=================================+
-    |                                             |
-    +---------------------------------------------+
->
-	:AbaqusShift 0.01
-<
-    +---------------------------------------------+
-    |abaqus_model.inp=============================|
-    |**                                           |
-    |*AMPLITUDE, NAME=ampName                     |
-    |   0.0,   0.0                                |
-    |   0.0,   0.0                                |
-    |**                                           |
-    |~                                            |
-    |command-line=================================+
-    |                                             |
-    +---------------------------------------------+
-
-You can see after shifting data precision have been lost since first x value
-has only one decimal place.
+Node commands are design to work with data lines under *NODE keyword.
+For instance you can do operation like scale/shift node coordinates, offset
+node id, reflect nodes respect to a plane.
 
 --------------------------------------------------------------------------------
-7.4. Reference mesh                                             *abaqus-refMesh*
+8.2.1 AbqNodeScale                                            *abaqus-nodeScale*
 
-The command converts reference mesh definition from *INITIAL CONDITIONS,
-TYPE=REF COORDINATE into mesh definition (*NODE & ELEMENT).
+Description:
+Scale node coordinates.
+
+Syntax:
+:AbqNodeScale x y z
+
+Arguments:
+x : x scale factor (default 1.0)
+y : y scale factor (default 1.0)
+z : z scale factor (default 1.0)
+
+Example of use (change system unit from m to mm):
+
+Make visual selection line with data lines:
+
+    +---------------------------------------------+
+    |abaqus_model.inp=============================|
+    |**                                           |
+    |*NODE                                        |
+   >|  1,  0.001,  0.001,  0.001                  |<
+   >|  2,  0.002,  0.002,  0.002                  |<
+   >|  3,  0.003,  0.003,  0.003                  |<
+    |**                                           |
+    |command-line=================================+
+    |                                             |
+    +---------------------------------------------+
+>
+	:AbqNodeScale 1000.0 1000.0 1000.0
+<
+    +---------------------------------------------+
+    |abaqus_model.inp=============================|
+    |**                                           |
+    |*NODE                                        |
+    |  1,   1.0,   1.0,   1.0                     |
+    |  2,   2.0,   2.0,   2.0                     |
+    |  3,   3.0,   3.0,   3.0                     |
+    |**                                           |
+    |command-line=================================+
+    |                                             |
+    +---------------------------------------------+
+
+--------------------------------------------------------------------------------
+8.2.2 AbqNodeShift                                            *abaqus-nodeShift*
+
+Description:
+Shift node coordinates in x, y, z direction.
+
+Syntax:
+:AbqNodeShift x y z
+
+Arguments:
+x : x shift value (default 0.0)
+y : y shift value (default 0.0)
+z : z shift value (default 0.0)
+
+Example of use:
+
+Make visual selection line with data lines:
+
+    +---------------------------------------------+
+    |abaqus_model.inp=============================|
+    |**                                           |
+    |*NODE                                        |
+    |  1,  1.0,  1.0,  1.0                        |
+    |  2,  2.0,  2.0,  2.0                        |
+    |  3,  3.0,  3.0,  3.0                        |
+    |**                                           |
+    |command-line=================================+
+    |                                             |
+    +---------------------------------------------+
+>
+	:AbqNodeShift 10.0 0.0 -20.0
+<
+    +---------------------------------------------+
+    |abaqus_model.inp=============================|
+    |**                                           |
+    |*NODE                                        |
+    |  1,  11.0,  1.0,  -19.0                     |
+    |  2,  12.0,  2.0,  -18.0                     |
+    |  3,  13.0,  3.0,  -17.0                     |
+    |**                                           |
+    |command-line=================================+
+    |                                             |
+    +---------------------------------------------+
+
+--------------------------------------------------------------------------------
+8.2.3 AbqNodeOffsetId                                      *abaqus-nodeOffsetId*
+
+Description:
+Offset node ids.
+
+Syntax:
+:AbqNodeOffsetId offset
+
+Arguments:
+offset : id offset value
+
+NOTE: This command call |abaqus-elemOffsetId| command with "-n" option.
+
+Example of use:
+
+Make visual selection line with data lines:
+
+    +---------------------------------------------+
+    |abaqus_model.inp=============================|
+    |**                                           |
+    |*NODE                                        |
+   >|  1,  1.0,  1.0,  1.0                        |<
+   >|  2,  2.0,  2.0,  2.0                        |<
+   >|  3,  3.0,  3.0,  3.0                        |<
+    |**                                           |
+    |command-line=================================+
+    |                                             |
+    +---------------------------------------------+
+>
+	:AbqNodeOffsetId 1000
+<
+    +---------------------------------------------+
+    |abaqus_model.inp=============================|
+    |**                                           |
+    |*NODE                                        |
+    |  1001,  1.0,  1.0,  1.0                     |
+    |  1002,  2.0,  2.0,  2.0                     |
+    |  1003,  3.0,  3.0,  3.0                     |
+    |**                                           |
+    |command-line=================================+
+    |                                             |
+    +---------------------------------------------+
+
+--------------------------------------------------------------------------------
+8.2.4 AbqNodeReflect                                        *abaqus-nodeReflect*
+
+Description:
+Reflect node respect to defined plane.
+
+Syntax:
+:AbqNodeReflect plane point
+
+Arguments:
+plane : plane definition
+point : point which the plane pass (default 0.0)
+
+Plane definition can be vector normal to user plane ("x", "y", "z") or plane
+description ("xy", "xz", "yz"). "xy" and "yx" both are accepted and works the
+same. The point is only one coordinate which lay on normal vector to the plane.
+
+Example of reflection respect to "yz" plane and point 0.0.
+
+                            yz plane passing through 0
+                            |
+                            |
+        (-7, 10, 10) o      |      o (7, 10, 10)
+                            |
+                            |
+      ---------------+------+------+--------------->
+                    -7      0      7                x
+
+Example of reflection respect to "yz" plane and point 2.0.
+
+                              yz plane passing through 2
+                              |
+                              |
+            (-3, 10, 10) o    |    o (7, 10, 10)
+                              |
+                              |
+      -------------------+--+-+----+--------------->
+                        -3  0 2    7                x
+Example of use:
+
+Make visual selection line with data lines:
+
+    +---------------------------------------------+
+    |abaqus_model.inp=============================|
+    |**                                           |
+    |*NODE                                        |
+   >|  1,  1.0,  1.0,  1.0                        |<
+   >|  2,  2.0,  2.0,  2.0                        |<
+   >|  3,  3.0,  3.0,  3.0                        |<
+    |**                                           |
+    |command-line=================================+
+    |                                             |
+    +---------------------------------------------+
+>
+	:AbqNodeReflect y
+<
+    +---------------------------------------------+
+    |abaqus_model.inp=============================|
+    |**                                           |
+    |*NODE                                        |
+    |  1,  1.0,  -1.0,  1.0                       |
+    |  2,  2.0,  -2.0,  2.0                       |
+    |  3,  3.0,  -3.0,  3.0                       |
+    |**                                           |
+    |command-line=================================+
+    |                                             |
+    +---------------------------------------------+
+>
+	:AbqNodeReflect xy 10.0
+<
+    +---------------------------------------------+
+    |abaqus_model.inp=============================|
+    |**                                           |
+    |*NODE                                        |
+    |  1,  1.0,  1.0,  19.0                       |
+    |  2,  2.0,  2.0,  18.0                       |
+    |  3,  3.0,  3.0,  17.0                       |
+    |**                                           |
+    |command-line=================================+
+    |                                             |
+    +---------------------------------------------+
+
+--------------------------------------------------------------------------------
+8.3 Element commands                                       *abaqus-elemCommands*
+
+Element commands are design to work with data lines under *ELEMENT keyword.
+For instance you can do operation like offset id of elements, reverse element
+normals, convert reference mesh.
+
+--------------------------------------------------------------------------------
+8.3.1 AbqElemOffsetId command                              *abaqus-elemOffsetId*
+
+Description:
+Offset node/element ids.
+
+Syntax:
+:AbqElemOffsetId -[en] offset
+
+Arguments:
+    -n : offset node id
+    -e : offset element id
+offset : offset value
+
+Arguments can be collected in one:
+   -en : offset element and node id
+
+Order of arguments is unimportant. "-en" and "-ne" options work the same.
+If arguments will be not passed by default function is call with "en" option.
+Keyword and comment lines from selection are ignored.
+
+Example of use:
+
+Make visual selection line with element lines:
+
+    +---------------------------------------------+
+    |abaqus_model.inp=============================|
+    |**                                           |
+    |*ELEMENT, TYPE=S4                            |
+   >|  1,   1,   2,   3,   4                      |<
+   >|  2,   5,   6,   7,   8                      |<
+   >|  3,   9,  10,  11,  12                      |<
+   >|  4,  13,  14,  15,  16                      |<
+    |**                                           |
+    |command-line=================================+
+    |                                             |
+    +---------------------------------------------+
+>
+	:AbqElemOffsetId 1000
+<
+    +---------------------------------------------+
+    |abaqus_model.inp=============================|
+    |**                                           |
+    |*ELEMENT, TYPE=S4                            |
+    | 1001,  1001,  1002,  1003,  1004            |
+    | 1002,  1005,  1006,  1007,  1008            |
+    | 1003,  1009,  1010,  1011,  1012            |
+    | 1004,  1013,  1014,  1015,  1016            |
+    |**                                           |
+    |command-line=================================+
+    |                                             |
+    +---------------------------------------------+
+>
+	:AbqElemOffsetId -n 500
+<
+    +---------------------------------------------+
+    |abaqus_model.inp=============================|
+    |**                                           |
+    |*ELEMENT, TYPE=S4                            |
+    |  1,  501,  502,  503,  504                  |
+    |  2,  505,  506,  507,  508                  |
+    |  3,  509,  510,  511,  512                  |
+    |  4,  513,  514,  515,  516                  |
+    |**                                           |
+    |command-line=================================+
+    |                                             |
+    +---------------------------------------------+
+>
+	:AbqElemOffsetId -e 2000
+<
+    +---------------------------------------------+
+    |abaqus_model.inp=============================|
+    |**                                           |
+    |*ELEMENT, TYPE=S4                            |
+    |  2001,   1,   2,   3,   4                   |
+    |  2002,   5,   6,   7,   8                   |
+    |  2003,   9,  10,  11,  12                   |
+    |  2004,  13,  14,  15,  16                   |
+    |**                                           |
+    |command-line=================================+
+    |                                             |
+    +---------------------------------------------+
+>
+NOTE: The command can be used with *NODE as well. In this case it is run with
+      "n" option and all other options are ignored.
+
+--------------------------------------------------------------------------------
+8.3.2 AbqElemReverseNormals command                  *abaqus-elemReverseNormals*
+
+Description:
+Reverse element normal orientation.
+
+Syntax:
+:AbqElemReverseNormals
+
+Arguments:
+None
+
+Keyword and comment lines are ignored.
+
+NOTE: Only tria and quad elements are supported.
+
+Example of use:
+
+Make visual selection line with element lines:
+
+    +---------------------------------------------+
+    |abaqus_model.inp=============================|
+    |**                                           |
+    |*ELEMENT, TYPE=S4                            |
+   >|  1,  1,  2,  3,  4                          |<
+   >|  2,  5,  6,  7,  8                          |<
+    |**                                           |
+    |command-line=================================+
+    |                                             |
+    +---------------------------------------------+
+>
+	:AbqElemReverseNormals
+<
+    +---------------------------------------------+
+    |abaqus_model.inp=============================|
+    |**                                           |
+    |*ELEMENT, TYPE=S4                            |
+    |  1,  1,  4,  3,  2                          |
+    |  2,  5,  8,  7,  6                          |
+    |**                                           |
+    |command-line=================================+
+    |                                             |
+    +---------------------------------------------+
+>
+--------------------------------------------------------------------------------
+8.3.3 AbqElemRefMesh command                                *abaqus-elemRefMesh*
+
+The command converts reference mesh definition (*INITIAL CONDITIONS,
+TYPE=REF COORDINATE) into mesh definition (*NODE & *ELEMENT).
 
 Function description:
 - new mesh is put into new VIM buffer
@@ -1209,7 +1579,7 @@ Make visual selection line with reference mesh:
     |                                             |
     +---------------------------------------------+
 >
-	:AbaqusRefMesh
+	:AbqElemRefMesh
 <
     +---------------------------------------------+
     |abaqus_model.inp=============================|
@@ -1243,11 +1613,11 @@ Make visual selection line with reference mesh:
 9. Include files                                               *abaqus-includes*
 
 VIM has a lot of helpful options to work with many files. You can use them
-to work with Abaqus include files if your model use them. The plugin setups
-those function to work with Abaqus *INCLUDE keyword.
+to work with Abaqus include files. The plugin setups those functions to work
+with Abaqus *INCLUDE keyword.
 
 --------------------------------------------------------------------------------
-9.1. File name completion                                   *abaqus-includeName*
+9.1 File name completion                                    *abaqus-includeName*
 
 With VIM build-in file completion <Ctrl-x><Ctrl-f> command you can in easy way
 add a new include file to your master deck.
@@ -1302,7 +1672,7 @@ Select include file:
     +---------------------------------------------+
 
 --------------------------------------------------------------------------------
-9.2. Include jumps                                          *abaqus-includeJump*
+9.2 Include jumps                                           *abaqus-includeJump*
 
 To jump from master deck into include file you can use <gf> or <gF> commands.
 
@@ -1350,7 +1720,7 @@ Use <gf> or <gF> to jump:
 NOTE: Jump commands work also when *INLCUDE line is commented.
 
 --------------------------------------------------------------------------------
-9.3. Checkpath                                                *abaqus-checkpath*
+9.3 Checkpath                                                 *abaqus-checkpath*
 
 VIM command :checkpath can be used to test are all your paths and include
 names are valid.
@@ -1361,7 +1731,7 @@ names are valid.
     |*INCLUDE, INPUT=../OO_INC/include_A.inc      |
     |*INCLUDE, INPUT=../OO_INC/include_X.inc      |
     |*INCLUDE, INPUT=../OO_INC/include_C.inc      |
-    |~                                            |
+    |**                                           |
     |~                                            |
     |~                                            |
     |~                                            |
@@ -1378,7 +1748,7 @@ names are valid.
     |*INCLUDE, INPUT=../OO_INC/include_A.inc      |
     |*INCLUDE, INPUT=../OO_INC/include_X.inc      |
     |*INCLUDE, INPUT=../OO_INC/include_C.inc      |
-    |~                                            |
+    |**                                           |
     |~                                            |
     |~                                            |
     |command-line=================================|
@@ -1390,18 +1760,13 @@ names are valid.
 ================================================================================
 10. Credits                                                     *abaqus-credits*
 
+ Plugin author : Bartosz Gradzik
+
  Many of functions used with the plugin is based on Abaqus VIM filetype plugin
  by Carl Osterwisch.
 
- keyword library       Bartosz Gradzik
- mappings              Bartosz Gradzik
- functions             Bartosz Gradzik
- amplitude commands    Bartosz Gradzik
- syntax highlighting   Bartosz Gradzik
- folding               Bartosz Gradzik
-
 ================================================================================
-11. License                                                    *abaqus-license*
+11. License                                                     *abaqus-license*
 
 Abaqus filetype plugin for VIM
 Copyright (C) 2014 Bartosz Gradzik (bartosz.gradzik@hotmail.com)
@@ -1426,8 +1791,21 @@ It's not a bug is a feature ;-)
 
 Found a bug? Please let me know at bartosz.gradzik@hotmail.com.
 
-Bugs list:
-----------
+--------------------------------------------------------------------------------
+
+The last word from the author.
+
+Congratulations! This is end of reading, you made it. Or you hit <G>? ;-)
+
+Hope you will find the plugin useful in your daily work with VIM & Abaqus.
+If you want to you can sent me short mail with a good word about it.
+Then I would know someone is use it and I did not wast a lot of my time ;-)
+
+Something is missing and you feel it will be useful for you and other users?
+Please let me know, I will see what I can do.
+
+Thanks,
+Bartosz
 
 ================================================================================
 vim:tw=80:ts=4:ft=help:norl:

@@ -4,14 +4,17 @@
 "
 " Language:     Abaqus FE solver input file
 " Maintainer:   Bartosz Gradzik <bartosz.gradzik@hotmail.com>
-" Last Change:  19th of Abaqus 2014
-" Version:      1.1.0
+" Last Change:  23th of December 2015
+" Version:      1.2.0
 "
 " History of change:
+"
+" v1.2.0
+"   - node & element commands added
+"
 " v1.1.0
 "   - template library added
 "
-" History of change:
 " v1.0.0
 "   - initial version base on default Abaqus ftplugin from VIM
 "     installation directory by Carl Osterwisch <osterwischc@asme.org>
@@ -87,11 +90,12 @@ iabbrev eof **------------------------------------EOF---------------------------
 nnoremap <silent><buffer> gf Vgf
 " open in new window
 nnoremap <silent><buffer> gF V<C-w>f<C-w>H
-" define include string, let use :checkpath
-setlocal include=\\cinput\\s*=
 " let use <C-x><c-f> with no white sign after '='
 setlocal isfname-==
 
+" define include string, let use :checkpath
+"setlocal include=\\cinput\\s*=
+setlocal include=\\c^\*include.*=
 " function to grap path from whole *INCLUDE line
 function! AbqIncludeName(fname)
   " remove evrything befor 1st '=' sign
@@ -194,17 +198,17 @@ endif
 let b:abaqusUserComp = 0
 
 " set user completion function to run with <C-X><C-U>
-setlocal completefunc=abq_templates#CompleteKeywords
+setlocal completefunc=abq_library#CompleteKeywords
 
 " mapping for <CR>/<C-Y>/<kEnter>
 " if g:abaqusUserComp is true run GetCompletion function
 " if g:abaqusUserComp is false act like <CR>/<C-Y>/<kEnter>
 inoremap <buffer><silent><script><expr> <CR>
- \ b:abaqusUserComp ? "\<ESC>:call abq_templates#GetCompletion()\<CR>" : "\<CR>"
+ \ b:abaqusUserComp ? "\<ESC>:call abq_library#GetCompletion()\<CR>" : "\<CR>"
 inoremap <buffer><silent><script><expr> <C-Y>
- \ b:abaqusUserComp ? "\<ESC>:call abq_templates#GetCompletion()\<CR>" : "\<C-Y>"
+ \ b:abaqusUserComp ? "\<ESC>:call abq_library#GetCompletion()\<CR>" : "\<C-Y>"
 inoremap <buffer><silent><script><expr> <kEnter>
- \ b:abaqusUserComp ? "\<ESC>:call abq_templates#GetCompletion()\<CR>" : "\<kEnter>"
+ \ b:abaqusUserComp ? "\<ESC>:call abq_library#GetCompletion()\<CR>" : "\<kEnter>"
 
 "-------------------------------------------------------------------------------
 "    LINE FORMATING
@@ -214,29 +218,55 @@ noremap <buffer><script><silent> <LocalLeader><LocalLeader>
  \ :call abq_autoformat#AbaqusLine()<CR>
 
 "-------------------------------------------------------------------------------
-"    COMMANDS
+"    AMPLITUDE COMMANDS
 "-------------------------------------------------------------------------------
 
-command! -buffer -range -nargs=* AbaqusShift
+command! -buffer -range -nargs=* AbqAmplitudeShift
  \ :call abq_amplitudes#Shift(<line1>,<line2>,<f-args>)
 
-command! -buffer -range -nargs=* AbaqusScale
+command! -buffer -range -nargs=* AbqAmplitudeScale
  \ :call abq_amplitudes#Scale(<line1>,<line2>,<f-args>)
 
-command! -buffer -range -nargs=* AbaqusResample
+command! -buffer -range -nargs=* AbqAmplitudeResample
  \ :call abq_amplitudes#Resample(<line1>,<line2>,<f-args>)
 
-command! -buffer -range -nargs=* AbaqusAddPoint
+command! -buffer -range -nargs=* AbqAmplitudeAddPoint
  \ :call abq_amplitudes#AddPoint(<line1>,<line2>,<f-args>)
 
-command! -buffer -range AbaqusSwap
+command! -buffer -range -nargs=0 AbqAmplitudeSwapXY
  \ :call abq_amplitudes#Swap(<line1>,<line2>)
 
-command! -buffer -range AbaqusReverse
+command! -buffer -range -nargs=0 AbqAmplitudeReverse
  \ :call abq_amplitudes#Reverse(<line1>,<line2>)
 
-command! -buffer -range AbaqusRefMesh
- \ :call abq_refMesh#RefMesh(<line1>,<line2>)
+"-------------------------------------------------------------------------------
+"   NODE COMMANDS
+"-------------------------------------------------------------------------------
+
+command! -buffer -range -nargs=* AbqNodeShift
+ \ :call abq_node#Shift(<line1>,<line2>,<f-args>)
+
+command! -buffer -range -nargs=* AbqNodeScale
+ \ :call abq_node#Scale(<line1>,<line2>,<f-args>)
+
+command! -buffer -range -nargs=* AbqNodeOffsetId
+ \ :call abq_element#OffsetId(<line1>,<line2>,<f-args>)
+
+command! -buffer -range -nargs=* AbqNodeReflect
+ \ :call abq_node#Reflect(<line1>,<line2>,<f-args>)
+
+"-------------------------------------------------------------------------------
+"   ELEMENT COMMANDS
+"-------------------------------------------------------------------------------
+
+command! -buffer -range -nargs=* AbqElemOffsetId
+ \ :call abq_element#OffsetId(<line1>,<line2>,<f-args>)
+
+command! -buffer -range -nargs=0 AbqElemReverseNormals
+ \ :call abq_element#ReverseNormals(<line1>,<line2>)
+
+command! -buffer -range -nargs=0 AbqElemRefmesh
+ \ :call abq_element#RefMesh(<line1>,<line2>)
 
 "-------------------------------------------------------------------------------
 " restore vim functions
