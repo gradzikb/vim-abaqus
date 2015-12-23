@@ -5,7 +5,7 @@
 
 What is Abaqus filetype plugin?
 
-It's just bunch of VIM scripts to speed up work with Abaqus inputdeck file.
+It's just bunch of scripts to speed up work with Abaqus inputdeck file and VIM text editor.
 
 ##Main plugin features
 - Syntax highlighting
@@ -28,8 +28,11 @@ With keyword completion you can in easy way add a new Abaqus keyword or update e
 
 ![completion](https://raw.github.com/wiki/gradzikb/vim-abaqus/gifs/completion.gif)
 
-###Amplitude commands
-You can use commands to operate with amplitude data directly in VIM.
+###Commands
+The plugin has many build-in commands to work with data directly for:
+- amplitudes
+- nodes
+- elements
 
 ![vimAbaqusAmpCommand](https://raw.github.com/wiki/gradzikb/vim-abaqus/gifs/commands.gif)
 
@@ -39,7 +42,6 @@ The plugin has couple of great functions to make your work even faster:
 - comment/uncomment
 - data line autoformating
 - reference mesh conversion
-- templates library
 
 ##Example
 
