@@ -4,10 +4,13 @@
 "
 " Language:     Abaqus FE solver input file
 " Maintainer:   Bartosz Gradzik (bartosz.gradzik@hotmail.com)
-" Last Change:  22th of November 2014
-" Version:      1.0.0
+" Last Change:  24th of July 2016
+" Version:      1.1.0
 "
 " History of change:
+" v1.1.0
+"   - highlighting improved
+"
 " v1.0.1
 "   - keyword multi line definition with white signs after coma support
 "
@@ -34,13 +37,13 @@ syntax match abqKeywordOption1 ',\s*[^=,]*'lc=1 contained
 syntax match abqKeywordOption2 '^\s*\a[^=,]*' contained
 syntax match abqKeywordValue '=[^,]*'lc=1 contained
 
-highlight default link abqComment Comment
-highlight default link abqErrorLine1 Error
-highlight default link abqErrorLine2 Error
-highlight default link abqKeywordName Statement
-highlight default link abqKeywordOption1 Identifier
-highlight default link abqKeywordOption2 Identifier
-highlight default link abqKeywordValue Constant
+highlight default link abqComment abaqusComment
+highlight default link abqErrorLine1 abaqusError
+highlight default link abqErrorLine2 abaqusError
+highlight default link abqKeywordName abaqusKeywordName
+highlight default link abqKeywordOption1 abaqusKeywordOption
+highlight default link abqKeywordOption2 abaqusKeywordOption
+highlight default link abqKeywordValue abaqusKeywordValue
 
 syntax cluster abqKeywordCluster add=abqComment
 syntax cluster abqKeywordCluster add=abqErrorLine1
